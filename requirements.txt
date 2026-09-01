@@ -1,0 +1,15 @@
+geopandas>=1.0.0
+numpy>=1.26.0
+pandas>=2.2.0
+shapely>=2.0.0
+pyproj>=3.6.0
+rasterio>=1.3.0
+folium>=0.17.0
+xarray>=2025.1.0
+rioxarray>=0.18.0
+obstore>=0.8.0
+zarr>=2.18.0
+overturemaps[geopandas]>=1.0.0
+jupyter>=1.0.0
+ipykernel>=6.29.0
+jupytext>=1.16.0

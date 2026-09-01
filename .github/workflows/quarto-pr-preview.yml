@@ -1,0 +1,75 @@
+name: Quarto PR Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Render Quarto project
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          path: .
+
+      - name: Upload rendered docs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: quarto-docs-pr-${{ github.event.number }}
+          path: docs/
+
+  publish-preview:
+    runs-on: ubuntu-latest
+    needs: render
+    if: github.event.pull_request.head.repo.full_name == github.repository
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download rendered docs artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: quarto-docs-pr-${{ github.event.number }}
+          path: docs
+
+      - name: Publish PR preview to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: docs
+          destination_dir: pr-preview/pr-${{ github.event.number }}
+          keep_files: true
+
+      - name: Comment preview URL on PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: quarto-preview
+          message: |
+            Quarto preview published.
+
+            Preview URL:
+            https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr-preview/pr-${{ github.event.number }}/
