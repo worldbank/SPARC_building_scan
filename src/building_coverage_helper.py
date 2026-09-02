@@ -12,6 +12,7 @@ import rasterio
 import xarray as xr
 import rioxarray  # noqa: F401
 import obstore
+import folium
 
 from zarr.storage import ObjectStore
 from overturemaps import geodataframe as overture_gdf
@@ -30,12 +31,27 @@ import GOSTrocks.rasterMisc as rMisc
  # light pink (very small structures < 15 m²).
 
 building_definitions = {
-     "large": {"color": "green", "min_area": 200},
-     "medium": {"color": "blue", "min_area": 120, "max_area": 200},
-     "small": {"color": "bright pink", "min_area": 15, "max_area": 120},
-     "very_small": {"color": "light pink", "max_area": 15}
+     "large": {"color": "#118020", "min_area": 200},
+     "medium": {"color": "#0000ff", "min_area": 120, "max_area": 200},
+     "small": {"color": "#ff69b4", "min_area": 15, "max_area": 120},
+     "very_small": {"color": "#ffb6c1", "max_area": 15}
  }
 
+building_colours = {
+     "large": "#118020",
+     "medium": "#0000ff",
+     "small": "#ff69b4",
+     "very_small": "#ffb6c1"
+ }
+
+def hex_to_rgb(hex_str):
+    # Remove the '#' prefix if it exists
+    hex_str = hex_str.lstrip('#')
+    
+    # Convert segments to integers by specifying base 16
+    return tuple(int(hex_str[i:i+2], 16) for i in (0, 2, 4))
+
+building_colours_rgb = {key: hex_to_rgb(color) for key, color in building_colours.items()}  
 
 class SPARC_city:
     def __init__(self, name, boundary_series, output_dir, crs):
@@ -165,8 +181,22 @@ class SPARC_city:
             with rasterio.open(self.overture_wsf_comparison_file, 'w', **meta) as dest:
                 dest.write(wsf_overture, 1)
 
+    def map_building_scan(self, map_name):
+        """
+        Generate a map visualizing the building scan results.
 
-
-            
-
-
+        Parameters:
+        - map_name (str): Type of map to produce; options include 'building_footprints', 'overture_digitized', 'wsf', 'wsf_comparison'.
+        """
+        if map_name == 'building_footprints':
+            def get_buildling_color(val):
+                return building_colours_rgb.get(val, "gray")
+            gdf = gpd.read_file(self.overture_file)
+            gdf.sort_values(by='area_m2', ascending=False, inplace=True)
+            m = gdf.explore(column='bldg_size', 
+                            categorical=True,
+                            cmap='viridis',
+                            #This colour mapping isn't working
+                            #color=lambda val: get_buildling_color(val),
+                            legend=True, tooltip=['area_m2'])
+            m.save("../docs/building_footprints.html")
