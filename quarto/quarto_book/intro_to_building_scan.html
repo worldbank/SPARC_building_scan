@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>SPARC Building Scan</title>
+<title>intro_to_building_scan – SPARC Building Scan</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,41 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -125,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../quarto_book/intro_to_building_scan.html"> 
+    <a class="nav-link active" href="../quarto_book/intro_to_building_scan.html" aria-current="page"> 
 <span class="menu-text">Building Scan</span></a>
   </li>  
   <li class="nav-item">
@@ -133,7 +98,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">What is SPARC?</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../notebooks/SPARC_building_scan_example.html" aria-current="page"> 
+    <a class="nav-link" href="../notebooks/SPARC_building_scan_example.html"> 
 <span class="menu-text">Analysis Notebook</span></a>
   </li>  
 </ul>
@@ -152,98 +117,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#deburgging" id="toc-deburgging" class="nav-link active" data-scroll-target="#deburgging">DEBURGGING</a></li>
+  <li><a href="#sparc-building-scan" id="toc-sparc-building-scan" class="nav-link active" data-scroll-target="#sparc-building-scan">SPARC Building Scan</a>
+  <ul class="collapse">
+  <li><a href="#building-scan-outputs" id="toc-building-scan-outputs" class="nav-link" data-scroll-target="#building-scan-outputs">Building Scan Outputs</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">SPARC Building Scan</h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
-<div class="quarto-title-meta">
 
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<p>The SPARC building scan is designed to extract and attribute building footprints for an entire city following a multistep process. To begin, we extract building footprints in the follow order:</p>
-<ol type="1">
-<li>Download buildings from Overture maps<br>
-</li>
-<li>Evaluate completeness of the downloaded building footprints through comparison to other built area data:
-<ol type="a">
-<li>World Settlement Footprint<br>
-</li>
-<li>GHSL<br>
-</li>
-<li>[POTENTIALLY] Alpha Earth embeddings</li>
-</ol></li>
-<li>Identify areas for infill from #2; perform infill using additional data sources:
-<ol type="a">
-<li>HOT OSM tasking<br>
-</li>
-<li>Purchase satellite imagery and run building extraction locally<br>
-</li>
-<li>Purchase extracted building footprints from commercial providers</li>
-</ol></li>
-</ol>
-<p>This notebook will focus on #1 and #2, with #3 being addressed in subsequent steps depending on the solution.</p>
-<div id="9e1dbeed" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rasterio.mask <span class="im">import</span> mask</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shapely.geometry <span class="im">import</span> mapping, shape</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>sys.path.append(<span class="st">"../src"</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> building_coverage_helper <span class="im">import</span> <span class="op">*</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># auto reload modules</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>load_ext autoreload</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>autoreload <span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="00f4f015" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Open the local city extent</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>CITY_EXTENTS_PATH <span class="op">=</span> <span class="vs">r"C:</span><span class="dv">\W</span><span class="vs">BG</span><span class="dv">\W</span><span class="vs">ork</span><span class="er">\</span><span class="vs">Projects</span><span class="dv">\S</span><span class="vs">PARC</span><span class="dv">\b</span><span class="vs">uilding_scan</span><span class="ch">\t</span><span class="vs">esting</span><span class="er">\</span><span class="vs">CIV_UCDB_cities</span><span class="dv">.</span><span class="vs">geojson"</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>CITY_NAME_FIELD <span class="op">=</span> <span class="st">"GC_UCN_MAI_2025"</span>  <span class="co"># Update to a valid column in your extents file.</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>city_extents <span class="op">=</span> gpd.read_file(CITY_EXTENTS_PATH)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>city_extents <span class="op">=</span> city_extents.to_crs(<span class="dv">4326</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Define output folder and files</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>OUTPUT_ROOT <span class="op">=</span> Path(<span class="vs">r"C:</span><span class="dv">\W</span><span class="vs">BG</span><span class="dv">\W</span><span class="vs">ork</span><span class="er">\</span><span class="vs">Projects</span><span class="dv">\S</span><span class="vs">PARC</span><span class="dv">\b</span><span class="vs">uilding_scan</span><span class="ch">\t</span><span class="vs">esting</span><span class="er">\</span><span class="vs">output"</span>)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>cities_folder <span class="op">=</span> OUTPUT_ROOT <span class="op">/</span> <span class="st">"cities"</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> out_dir <span class="kw">in</span> [OUTPUT_ROOT, cities_folder]:</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    Path(out_dir).mkdir(parents<span class="op">=</span><span class="va">True</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="81a07151" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> city_extents.iterrows():</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    city_name <span class="op">=</span> row[CITY_NAME_FIELD]</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    out_folder <span class="op">=</span> cities_folder <span class="op">/</span> city_name</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    city_processor <span class="op">=</span> SPARC_city(city_name, row, out_folder, city_extents.crs)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    city_processor.download_overture()</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    city_processor.download_wsf()</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    city_processor.compare_overture_wsf()</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<section id="deburgging" class="level1">
-<h1>DEBURGGING</h1>
+<section id="sparc-building-scan" class="level1">
+<h1>SPARC Building Scan</h1>
+<p>Welcome to the SPARC Building Scan project. This document provides an introduction to the project and guides you through the initial steps of using the analysis tools provided.</p>
+<p>Tier 2 of the SPARC program focuses on tailored analytical products for individual cities. The Building Scan product is designed to provide detailed insights into the building stock of a city, including information on building types, heights, footprints, and other relevant attributes. This enables city planners, policymakers, and investors to make informed decisions regarding urban development, infrastructure planning, and risk assessment.</p>
+<section id="building-scan-outputs" class="level2">
+<h2 class="anchored" data-anchor-id="building-scan-outputs">Building Scan Outputs</h2>
+<p>The Building Scan product generates several key outputs that provide comprehensive insights into the urban building landscape:</p>
+<ul>
+<li><strong>Building Footprints:</strong> Detailed mapping of the spatial extent of each building within the city.</li>
+<li><strong>Building Heights:</strong> Information on the vertical dimension of buildings, which is crucial for urban planning and risk assessment.</li>
+<li><strong>Building Age:</strong> Information on the age of buildings, which can be important for understanding the historical development of the city and for assessing the need for maintenance or retrofitting.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

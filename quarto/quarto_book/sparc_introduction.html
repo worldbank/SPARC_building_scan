@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>SPARC Building Scan</title>
+<title>sparc_introduction – SPARC Building Scan</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,41 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -129,11 +94,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Building Scan</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../quarto_book/sparc_introduction.html"> 
+    <a class="nav-link active" href="../quarto_book/sparc_introduction.html" aria-current="page"> 
 <span class="menu-text">What is SPARC?</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../notebooks/SPARC_building_scan_example.html" aria-current="page"> 
+    <a class="nav-link" href="../notebooks/SPARC_building_scan_example.html"> 
 <span class="menu-text">Analysis Notebook</span></a>
   </li>  
 </ul>
@@ -152,98 +117,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#deburgging" id="toc-deburgging" class="nav-link active" data-scroll-target="#deburgging">DEBURGGING</a></li>
+  <li><a href="#what-is-sparc" id="toc-what-is-sparc" class="nav-link active" data-scroll-target="#what-is-sparc">What is SPARC</a>
+  <ul class="collapse">
+  <li><a href="#tier-1-global-urban-data-and-analytics" id="toc-tier-1-global-urban-data-and-analytics" class="nav-link" data-scroll-target="#tier-1-global-urban-data-and-analytics">Tier 1 — Global urban data and analytics</a></li>
+  <li><a href="#tier-2-city-specific-geospatial-intelligence" id="toc-tier-2-city-specific-geospatial-intelligence" class="nav-link" data-scroll-target="#tier-2-city-specific-geospatial-intelligence">Tier 2 — City-specific geospatial intelligence</a></li>
+  <li><a href="#tier-3-operational-uptake-and-client-integration" id="toc-tier-3-operational-uptake-and-client-integration" class="nav-link" data-scroll-target="#tier-3-operational-uptake-and-client-integration">Tier 3 — Operational uptake and client integration</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">SPARC Building Scan</h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
-<div class="quarto-title-meta">
 
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<p>The SPARC building scan is designed to extract and attribute building footprints for an entire city following a multistep process. To begin, we extract building footprints in the follow order:</p>
-<ol type="1">
-<li>Download buildings from Overture maps<br>
-</li>
-<li>Evaluate completeness of the downloaded building footprints through comparison to other built area data:
-<ol type="a">
-<li>World Settlement Footprint<br>
-</li>
-<li>GHSL<br>
-</li>
-<li>[POTENTIALLY] Alpha Earth embeddings</li>
-</ol></li>
-<li>Identify areas for infill from #2; perform infill using additional data sources:
-<ol type="a">
-<li>HOT OSM tasking<br>
-</li>
-<li>Purchase satellite imagery and run building extraction locally<br>
-</li>
-<li>Purchase extracted building footprints from commercial providers</li>
-</ol></li>
-</ol>
-<p>This notebook will focus on #1 and #2, with #3 being addressed in subsequent steps depending on the solution.</p>
-<div id="9e1dbeed" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rasterio.mask <span class="im">import</span> mask</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shapely.geometry <span class="im">import</span> mapping, shape</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>sys.path.append(<span class="st">"../src"</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> building_coverage_helper <span class="im">import</span> <span class="op">*</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># auto reload modules</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>load_ext autoreload</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>autoreload <span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="00f4f015" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Open the local city extent</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>CITY_EXTENTS_PATH <span class="op">=</span> <span class="vs">r"C:</span><span class="dv">\W</span><span class="vs">BG</span><span class="dv">\W</span><span class="vs">ork</span><span class="er">\</span><span class="vs">Projects</span><span class="dv">\S</span><span class="vs">PARC</span><span class="dv">\b</span><span class="vs">uilding_scan</span><span class="ch">\t</span><span class="vs">esting</span><span class="er">\</span><span class="vs">CIV_UCDB_cities</span><span class="dv">.</span><span class="vs">geojson"</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>CITY_NAME_FIELD <span class="op">=</span> <span class="st">"GC_UCN_MAI_2025"</span>  <span class="co"># Update to a valid column in your extents file.</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>city_extents <span class="op">=</span> gpd.read_file(CITY_EXTENTS_PATH)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>city_extents <span class="op">=</span> city_extents.to_crs(<span class="dv">4326</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Define output folder and files</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>OUTPUT_ROOT <span class="op">=</span> Path(<span class="vs">r"C:</span><span class="dv">\W</span><span class="vs">BG</span><span class="dv">\W</span><span class="vs">ork</span><span class="er">\</span><span class="vs">Projects</span><span class="dv">\S</span><span class="vs">PARC</span><span class="dv">\b</span><span class="vs">uilding_scan</span><span class="ch">\t</span><span class="vs">esting</span><span class="er">\</span><span class="vs">output"</span>)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>cities_folder <span class="op">=</span> OUTPUT_ROOT <span class="op">/</span> <span class="st">"cities"</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> out_dir <span class="kw">in</span> [OUTPUT_ROOT, cities_folder]:</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    Path(out_dir).mkdir(parents<span class="op">=</span><span class="va">True</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="81a07151" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> city_extents.iterrows():</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    city_name <span class="op">=</span> row[CITY_NAME_FIELD]</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    out_folder <span class="op">=</span> cities_folder <span class="op">/</span> city_name</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    city_processor <span class="op">=</span> SPARC_city(city_name, row, out_folder, city_extents.crs)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    city_processor.download_overture()</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    city_processor.download_wsf()</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    city_processor.compare_overture_wsf()</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<section id="deburgging" class="level1">
-<h1>DEBURGGING</h1>
+<section id="what-is-sparc" class="level1">
+<h1>What is SPARC</h1>
+<p>Cities in developing countries often lack current, reliable, and accessible geospatial data. Existing information is frequently fragmented across analogue or disconnected systems, costly to acquire and analyze, and difficult to reuse because of inconsistent licensing and limited technical capacity. As a result, World Bank Group teams, governments, and private investors may rely on outdated or low-resolution evidence when deciding where to invest in infrastructure, services, resilience, and urban development—slowing project preparation, duplicating costs, and increasing the risk of poorly targeted investments.</p>
+<p>The Smart Parcel Atlas for Resilient Cities (SPARC) program addresses this gap by creating a shared, scalable platform for urban geospatial intelligence. The SPARC Toolkit on GeoInsight will combine quality-assured satellite imagery, global and city-specific datasets, standardized analytics, AI-enabled tools, and practical guidance in an interface accessible to non-specialists. There are three tiers of the SPARC program: 1. Tier 1 — Global urban data and analytics 2. Tier 2 — City-specific geospatial intelligence 3. Tier 3 — Operational uptake and client integration</p>
+<section id="tier-1-global-urban-data-and-analytics" class="level2">
+<h2 class="anchored" data-anchor-id="tier-1-global-urban-data-and-analytics">Tier 1 — Global urban data and analytics</h2>
+<p>Provides standardized, quality-assured geospatial data and automated statistics for approximately 10,000 cities worldwide. Includes city extent, built-up area, buildings, population, roads, administrative boundaries, and hazard data. Supports early operational scoping and serves as a “conversation starter” for country and city engagements. Made available through the SPARC Toolkit on GeoInsights for internal and external users.</p>
+</section>
+<section id="tier-2-city-specific-geospatial-intelligence" class="level2">
+<h2 class="anchored" data-anchor-id="tier-2-city-specific-geospatial-intelligence">Tier 2 — City-specific geospatial intelligence</h2>
+<p>Delivers higher-resolution, on-demand analytics for up to 100 priority cities. Supports investment option assessment and site prioritization through six initial services: buildings and parcels; urban public infrastructure; extreme heat exposure; multi-hazard exposure; green infrastructure; and urban settlement forecasts. Produces data layers, maps, analytical findings, and investment recommendations tailored to operational needs. Uses standardized workflows, centralized procurement, and partnerships to reduce the cost of each city analysis.</p>
+</section>
+<section id="tier-3-operational-uptake-and-client-integration" class="level2">
+<h2 class="anchored" data-anchor-id="tier-3-operational-uptake-and-client-integration">Tier 3 — Operational uptake and client integration</h2>
+<p>Connects SPARC analytics directly to World Bank Group operations and client decision-making. Regional operational teams lead demand identification, client engagement, local validation, and incorporation of findings into projects and local systems. Training, technical guidance, communications materials, and user-friendly GeoInsights tools help non-geospatial specialists interpret and apply the data. Ensures that the global and city-level analytics translate into better-targeted public and private investments.</p>
+<p>The program will provide consistent urban data for roughly 10,000 cities worldwide while delivering higher-resolution, on-demand analytics for up to 100 cities in areas such as buildings and parcels, infrastructure access, heat and hazard exposure, green infrastructure, and future urban growth.</p>
+<p>By centralizing data procurement, analytical workflows, technical support, and access, SPARC will reduce duplication and costs while improving data reuse across the World Bank Group and its clients. This shared “global technical backbone,” paired with regionally led client engagement, is intended to accelerate project preparation, improve the targeting of public and private investment, and support more resilient, productive, and inclusive urban development.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
