@@ -181,7 +181,7 @@ class SPARC_city:
             with rasterio.open(self.overture_wsf_comparison_file, 'w', **meta) as dest:
                 dest.write(wsf_overture, 1)
 
-    def map_building_scan(self, map_name):
+    def map_building_scan(self, map_name, output_file):
         """
         Generate a map visualizing the building scan results.
 
@@ -199,4 +199,4 @@ class SPARC_city:
                             #This colour mapping isn't working
                             #color=lambda val: get_buildling_color(val),
                             legend=True, tooltip=['area_m2'])
-            m.save("../docs/building_footprints.html")
+            m.save(f"../docs/{output_file}")
