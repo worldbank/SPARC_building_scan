@@ -1,5 +1,5 @@
 # SPARC Building Scan
-Welcome to the SPARC Building Scan project. This document provides an introduction to the project and guides you through the initial steps of using the analysis tools provided.
+Welcome to the [SPARC](https://www.worldbank.org/en/topic/urbandevelopment/brief/sparc) Building Scan project. This document provides an introduction to the project and guides you through the initial steps of using the analysis tools provided.
 
 Tier 2 of the SPARC program focuses on tailored analytical products for individual cities. The Building Scan product is designed to provide detailed insights into the building stock of a city, including information on building types, heights, footprints, and other relevant attributes. This enables city planners, policymakers, and investors to make informed decisions regarding urban development, infrastructure planning, and risk assessment.
 
