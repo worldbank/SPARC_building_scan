@@ -413,7 +413,7 @@ class SPARC_city:
             )
 
         if ghs_smod and "ghs_smod_label" not in buildings.columns:
-            ghs_smodR = rasterio.open(ghs_smod)
+            ghs_smodR = rasterio.open(self.smod_file if ghs_smod is True else ghs_smod)
             if buildings.crs != ghs_smodR.crs:
                 buildings = buildings.to_crs(ghs_smodR.crs)
             ghs_smod_values = list(
