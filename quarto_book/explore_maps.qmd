@@ -1,0 +1,26 @@
+---
+title: "Explore building footprints"
+format: html
+---
+
+Select a page from the dropdown to view its contents below.
+
+```{ojs}
+//| echo: false
+
+// 1. Define your dropdown menu options
+viewof selectedPage = Inputs.select(
+  new Map([
+    ["Building Footprints", "building_footprints.html"],
+    ["Danané Building Footprints", "../docs/Danané_building_footprints.html"]
+  ]), 
+  {label: "Choose a page to display:", value: "building_footprints.html"}
+)
+```
+
+```{ojs}
+//| echo: false
+
+// 2. Dynamically update the iframe source based on the selection
+html`<iframe src="${selectedPage}" width="100%" height="600px" style="border:1px solid #ccc; border-radius: 4px;"></iframe>`
+```
