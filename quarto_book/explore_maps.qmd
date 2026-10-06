@@ -11,11 +11,10 @@ Select a page from the dropdown to view its contents below.
 // 1. Define your dropdown menu options
 viewof selectedPage = Inputs.select(
   new Map([
-    ["Google", "https://example.com"],
-    ["Wikipedia", "https://example.com"],
-    ["Local Report", "my_local_report.html"]
+    ["Building Footprints", "building_footprints.html"],
+    ["Danané Building Footprints", "../docs/Danané_building_footprints.html"]
   ]), 
-  {label: "Choose a page to display:", value: "https://example.com"}
+  {label: "Choose a page to display:", value: "building_footprints.html"}
 )
 ```
 
