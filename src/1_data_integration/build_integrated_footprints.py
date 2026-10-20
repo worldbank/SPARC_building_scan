@@ -27,8 +27,9 @@ OVERLAP_TOLERANCE_M2 = 0.01  # below this, an intersection is a boundary-touch/s
 OVERLAP_SMALLER_FRACTION = 0.20  # intersection must cover >= 20% of the smaller footprint to count as a conflict
 GLOBFP_DATE = pd.Timestamp("2020-01-01", tz="UTC")  # 3D-GloBFP's documented model vintage; it has no per-feature date
 RECENCY_TIEBREAK = {
-    # Used only when two candidates share the same footprint_date (or both lack one):
-    # higher priority wins. Does not affect selection when dates differ.
+    # Primary ranking key for overlap resolution: higher priority always wins.
+    # footprint_date (most recent first) only decides between candidates of
+    # equal priority, e.g. two overlapping OSM footprints.
     "OpenStreetMap": 3,
     "Overture_nonOSM": 2,
     "3D-GloBFP_gapfill": 1,
@@ -176,13 +177,10 @@ def overture_candidates(data, slug: str) -> gpd.GeoDataFrame:
 
 def globfp_candidates(data, slug: str) -> gpd.GeoDataFrame:
     # 3D-GloBFP has no per-feature dates, so every footprint is dated 2020-01-01
-    # (its documented model vintage). Conflicts are decided by date first, so a
-    # 3D-GloBFP footprint is kept, and the overlapping Overture/OSM footprint is
-    # dropped, when that Overture footprint's latest update_time is before 2020
-    # or missing. It loses to any Overture footprint updated in 2020 or later.
-    # Its lowest recency_tiebreak_priority only matters for an exact date tie.
-    # It is also kept wherever no Overture footprint overlaps it by >= 20% of
-    # the smaller footprint (pure gap-fill).
+    # (its documented model vintage). It has the lowest source priority, so it
+    # always loses to an overlapping Overture/OSM footprint and is kept only
+    # where no Overture footprint overlaps it by >= 20% of the smaller
+    # footprint (pure gap-fill).
     result = gpd.GeoDataFrame({
         "integrated_id": [f"{slug}-GLO-{i:08d}" for i in range(1, len(data) + 1)],
         "geometry_source": "3D-GloBFP_gapfill",
@@ -462,7 +460,7 @@ def build(city: str, data_root: Path, force: bool = False) -> None:
     if provisional.empty:
         raise RuntimeError("Neither Overture nor 3D-GloBFP supplied a footprint in the AOI")
 
-    # Step 3: pick one geometry per real-world building (newest wins on conflict).
+    # Step 3: pick one geometry per real-world building (highest source priority wins, then newest).
     # See footprint_overlap_resolution.resolve_overlaps_by_recency for the algorithm.
     integrated, suppressed = resolve_overlaps_by_recency(
         provisional,
@@ -511,7 +509,8 @@ def build(city: str, data_root: Path, force: bool = False) -> None:
         "overlap_rule": {
             "minimum_intersection_m2": OVERLAP_TOLERANCE_M2,
             "minimum_fraction_of_smaller_footprint": OVERLAP_SMALLER_FRACTION,
-            "winner": "most recent footprint",
+            "winner": "highest source priority, then most recent footprint",
+            "source_priority": RECENCY_TIEBREAK,
         },
         "globfp_support_edges": int(len(support_edges)),
         "height_available": int(integrated.height_best_m.notna().sum()),

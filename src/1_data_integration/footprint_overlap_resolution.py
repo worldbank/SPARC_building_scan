@@ -1,4 +1,4 @@
-"""Resolve footprint conflicts with a recency-first greedy policy."""
+"""Resolve footprint conflicts with a source-priority-then-recency greedy policy."""
 
 from __future__ import annotations
 
