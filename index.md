@@ -20,12 +20,9 @@ Project teams often default to public sources such as OpenStreetMap or Google Op
 ::: {.card-body}
 Integrates public datasets (Overture, OSM, 3D GlobFP), with cleaning to remove duplicates and false positives.
 
-**Output:** Building footprints with estimated height and year, plus a completeness assessment.
-
-**Typical use:** Investment scoping.
 :::
 ::: {.card-footer}
-Accuracy: [Moderate]{.badge .bg-warning .text-dark}
+**Typical use:** Investment scoping.
 :::
 ::::
 :::::
@@ -38,12 +35,9 @@ Accuracy: [Moderate]{.badge .bg-warning .text-dark}
 ::: {.card-body}
 Option 1, supplemented with AI extraction in poorly mapped areas (missing or outdated buildings), using high-resolution satellite imagery and the open-source Segment Anything Model (SAM3).
 
-**Output:** High-coverage building footprints with estimated height and year.
-
-**Typical use:** Analytics informing infrastructure operations.
 :::
 ::: {.card-footer}
-Accuracy: [High (~0.8)]{.badge .bg-info .text-dark}
+**Typical use:** Analytics informing infrastructure operations.
 :::
 ::::
 :::::
@@ -56,12 +50,9 @@ Accuracy: [High (~0.8)]{.badge .bg-info .text-dark}
 ::: {.card-body}
 Digitization carried out by a specialist firm using procured imagery.
 
-**Output:** Full-coverage building footprints with estimated height and year.
-
-**Typical use:** Taxation, or a complete building registry or cadastral system.
 :::
 ::: {.card-footer}
-Accuracy: [Very high (~0.9)]{.badge .bg-success}
+**Typical use:** Taxation, or a complete building registry or cadastral system.
 :::
 ::::
 :::::
@@ -70,12 +61,13 @@ Accuracy: [Very high (~0.9)]{.badge .bg-success}
 
 |                  | Option 1 — Open-Source Layers | Option 2 — AI Extraction | Option 3 — Manual Digitization |
 |------------------|-------------------------------|--------------------------|--------------------------------|
-| **Approach**     | Public datasets (Overture, OSM, 3D GlobFP), cleaned of duplicates and false positives | Option 1 plus AI extraction (SAM3 on high-res imagery) in poorly mapped areas | Digitization by a specialist firm using procured imagery |
+| **Approach**     | Integration of public datasets and data cleaning to remove duplicates and false positives | Option 1 plus AI-derived buildings from imagery | Digitization by a specialist firm using procured imagery |
 | **Output**       | Footprints with height and year, plus completeness assessment | High-coverage footprints with height and year | Full-coverage footprints with height and year |
-| **Typical use**  | Investment scoping | Analytics for infrastructure operations | Taxation, building registry, cadastre |
+| **Cost**  | < $5k | ~$10k | ~30k |
+| **Turnaround**  | 2 weeks | 4 to 6 weeks | 3-6 months |
 | **Accuracy**     | Moderate | High (~0.8) | Very high (~0.9) |
 
-: Comparison of building data options {.striped .hover}
+: Comparison of building scan workflows {.striped .hover}
 
 ## Data Attributes
 
