@@ -11,8 +11,6 @@ The Building Scan workflow leverages various open-source geospatial layers to ge
 
 ### Footprint sources
 
-::: {.panel-tabset}
-
 #### Overture Maps Buildings
 
 Overture Maps Buildings is a global vector building layer published by the Overture Maps Foundation. Overture conflates several major open and openly licensed footprint sources — OpenStreetMap (OSM), Google Open Buildings, Microsoft Global ML Building Footprints, Esri, and Meta — into a single layer of roughly 2.3 billion footprints, prioritizing community-contributed OSM geometry over machine-learning-derived sources during conflation.
@@ -24,8 +22,6 @@ Overture Maps Buildings is a global vector building layer published by the Overt
 3D-GloBFP is the first global building-footprint dataset to include a modeled height for every individual building. Its footprint geometries are drawn primarily from Microsoft's Global ML Building Footprints (~1.3 billion structures, ca. 2020) and augmented in East Asia with ~280 million building footprints of Shi et al. (2024), produced with their Comprehensive Large-Scale Mapping (CLSM) framework, to address known coverage gaps in the region.
 
 [[Che, Y., Li, X., Liu, X., Wang, Y., Liao, W., Zheng, X., et al. [(2024)](https://doi.org/10.5194/essd-16-5357-2024). 3D-GloBFP: The first global three-dimensional building footprint dataset. *Earth System Science Data*, 16, 5357–5374.]{.small .text-muted}
-
-:::
 
 ### Raster height sources
 
@@ -50,7 +46,7 @@ The integration step (`src/1_data_integration`) combines Overture Maps Buildings
 | 3 | `build_integrated_footprints.py` | Clean, merge, de-duplicate, and attribute footprints |
 | 4 | `acquire_height_sources.py`, `enrich_raster_heights.py` | Attach raster heights and finalize the best height |
 
-### 1. Prepare the city
+### 1. Prepare inputs
 
 The user supplies a city name and an area of interest (AOI) polygon. The AOI is reprojected to a local UTM zone, which is used for all area and overlap calculations.
 
@@ -70,7 +66,7 @@ Each source is cleaned independently:
 
 Both sources are then put on a common schema. Overture footprints are labelled `OpenStreetMap` or `Overture_nonOSM` by their provider and dated by the most recent `update_time` among their source records. 3D-GloBFP has no per-feature dates, so its footprints are labelled `3D-GloBFP_gapfill` and given the dataset's 2020 model vintage.
 
-### 4. Resolve overlapping footprints
+#### Resolve overlapping footprints
 
 The two sources are pooled, and conflicting footprints are resolved so each building is represented once.
 
@@ -82,7 +78,7 @@ The two sources are pooled, and conflicting footprints are resolved so each buil
 
 In practice, Overture geometry is kept wherever it exists, and 3D-GloBFP adds buildings that Overture is missing. Every suppressed footprint is recorded in a lineage table alongside the footprint that replaced it.
 
-### 5. Attribute the integrated footprints
+### 4. Attribute the integrated footprints
 
 **3D-GloBFP support.** A footprint is *supported* when a 3D-GloBFP footprint overlaps it by at least 1 m² and 35% of the smaller footprint. This is an independent check that the building exists and does not affect which geometry is selected.
 
@@ -104,7 +100,7 @@ A `selection_reason` attribute records the source and supporting evidence for ea
 
 **Reporting segments.** Each footprint is assigned to the segment containing its interior point. Segments are used for reporting only.
 
-### 6. Raster height enrichment
+#### Raster height enrichment
 
 The raster height sources are located for the AOI: Google 2.5D tiles via S2-cell manifests, TEMPO tiles via its tile index, and GBA.Height tiles via the official tile index. Each footprint is then sampled at its interior point. Where several rasters cover a point, valid values are averaged. Raster heights are only accepted when they fall within 0.5–100 m and, for Google, building presence is ≥ 0.5, and for TEMPO, building density is ≥ 0.001 (both thresholds are configurable).
 
