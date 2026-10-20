@@ -61,7 +61,7 @@ Then create the environment and install dependencies:
 
 > **Note:** If a conda environment is active (e.g. `(base)` in your prompt), run `conda deactivate` before using venv or uv. Otherwise the conda environment may be used instead of `.venv`.
 
-### Running the building scan workflow
+### Running the python workflow
 
 Activate the environment as above, or skip activation and run scripts with `uv run`.
 
