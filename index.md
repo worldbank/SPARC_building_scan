@@ -15,7 +15,7 @@ Project teams often default to public sources such as OpenStreetMap or Google Op
 ::::: {.g-col-12 .g-col-md-4}
 :::: {.card .h-100}
 ::: {.card-header}
-**Option 1 — Open-Source Layers**
+**1. Open-Source Layers**
 :::
 ::: {.card-body}
 Integrates public datasets (Overture, OSM, 3D GlobFP), with cleaning to remove duplicates and false positives.
@@ -30,7 +30,7 @@ Integrates public datasets (Overture, OSM, 3D GlobFP), with cleaning to remove d
 ::::: {.g-col-12 .g-col-md-4}
 :::: {.card .h-100}
 ::: {.card-header}
-**Option 2 — AI Extraction**
+**2. AI Extraction**
 :::
 ::: {.card-body}
 Option 1, supplemented with AI extraction in poorly mapped areas (missing or outdated buildings), using high-resolution satellite imagery and the open-source Segment Anything Model (SAM3).
@@ -45,7 +45,7 @@ Option 1, supplemented with AI extraction in poorly mapped areas (missing or out
 ::::: {.g-col-12 .g-col-md-4}
 :::: {.card .h-100}
 ::: {.card-header}
-**Option 3 — Manual Digitization**
+**3. Manual Digitization**
 :::
 ::: {.card-body}
 Digitization carried out by a specialist firm using procured imagery.
@@ -59,9 +59,9 @@ Digitization carried out by a specialist firm using procured imagery.
 
 ::::::
 
-|                  | Option 1 — Open-Source Layers | Option 2 — AI Extraction | Option 3 — Manual Digitization |
+|                  | Option 1 — Open-Source | Option 2 — AI Extraction | Option 3 — Digitization |
 |------------------|-------------------------------|--------------------------|--------------------------------|
-| **Approach**     | Integration of public datasets and data cleaning to remove duplicates and false positives | Option 1 plus AI-derived buildings from imagery | Digitization by a specialist firm using procured imagery |
+| **Approach**     | Integration of public datasets | Option 1 plus AI-derived buildings from imagery | Digitization by a specialist firm using procured imagery |
 | **Output**       | Footprints with height and year, plus completeness assessment | High-coverage footprints with height and year | Full-coverage footprints with height and year |
 | **Cost**  | < $5k | ~$10k | ~30k |
 | **Turnaround**  | 2 weeks | 4 to 6 weeks | 3-6 months |
@@ -75,9 +75,6 @@ Each building is attributed with the following variables.
 
 - **Building Heights:** Information on the vertical dimension of buildings, which is crucial for urban planning and risk assessment.
 - **Building Age:** Information on the age of buildings, which can be important for understanding the historical development of the city and for assessing the need for maintenance or retrofitting.
-
-
-
 
 ## SPARC Project Background 
 
