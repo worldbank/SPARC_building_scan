@@ -129,12 +129,10 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   <li><a href="#data-integration" id="toc-data-integration" class="nav-link" data-scroll-target="#data-integration">Data Integration</a>
   <ul class="collapse">
-  <li><a href="#prepare-the-city" id="toc-prepare-the-city" class="nav-link" data-scroll-target="#prepare-the-city">1. Prepare the city</a></li>
+  <li><a href="#prepare-inputs" id="toc-prepare-inputs" class="nav-link" data-scroll-target="#prepare-inputs">1. Prepare inputs</a></li>
   <li><a href="#download-footprint-sources" id="toc-download-footprint-sources" class="nav-link" data-scroll-target="#download-footprint-sources">2. Download footprint sources</a></li>
   <li><a href="#clean-and-harmonize" id="toc-clean-and-harmonize" class="nav-link" data-scroll-target="#clean-and-harmonize">3. Clean and harmonize</a></li>
-  <li><a href="#resolve-overlapping-footprints" id="toc-resolve-overlapping-footprints" class="nav-link" data-scroll-target="#resolve-overlapping-footprints">4. Resolve overlapping footprints</a></li>
-  <li><a href="#attribute-the-integrated-footprints" id="toc-attribute-the-integrated-footprints" class="nav-link" data-scroll-target="#attribute-the-integrated-footprints">5. Attribute the integrated footprints</a></li>
-  <li><a href="#raster-height-enrichment" id="toc-raster-height-enrichment" class="nav-link" data-scroll-target="#raster-height-enrichment">6. Raster height enrichment</a></li>
+  <li><a href="#attribute-the-integrated-footprints" id="toc-attribute-the-integrated-footprints" class="nav-link" data-scroll-target="#attribute-the-integrated-footprints">4. Attribute the integrated footprints</a></li>
   <li><a href="#outputs" id="toc-outputs" class="nav-link" data-scroll-target="#outputs">Outputs</a></li>
   </ul></li>
   </ul>
@@ -169,19 +167,16 @@ ul.task-list li input[type="checkbox"] {
 <p>The Building Scan workflow leverages various open-source geospatial layers to generate building footprints and heights.</p>
 <section id="footprint-sources" class="level3">
 <h3 class="anchored" data-anchor-id="footprint-sources">Footprint sources</h3>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Overture Maps Buildings</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">3D-GloBFP</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<section id="overture-maps-buildings" class="level4">
+<h4 class="anchored" data-anchor-id="overture-maps-buildings">Overture Maps Buildings</h4>
 <p>Overture Maps Buildings is a global vector building layer published by the Overture Maps Foundation. Overture conflates several major open and openly licensed footprint sources — OpenStreetMap (OSM), Google Open Buildings, Microsoft Global ML Building Footprints, Esri, and Meta — into a single layer of roughly 2.3 billion footprints, prioritizing community-contributed OSM geometry over machine-learning-derived sources during conflation.</p>
 <p><span class="small text-muted"><a href="https://docs.overturemaps.org/">Overture Maps Foundation</a>. (2024).</span></p>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+</section>
+<section id="d-globfp" class="level4">
+<h4 class="anchored" data-anchor-id="d-globfp">3D-GloBFP</h4>
 <p>3D-GloBFP is the first global building-footprint dataset to include a modeled height for every individual building. Its footprint geometries are drawn primarily from Microsoft’s Global ML Building Footprints (~1.3 billion structures, ca. 2020) and augmented in East Asia with ~280 million building footprints of Shi et al.&nbsp;(2024), produced with their Comprehensive Large-Scale Mapping (CLSM) framework, to address known coverage gaps in the region.</p>
 <p>[<span class="small text-muted">Che, Y., Li, X., Liu, X., Wang, Y., Liao, W., Zheng, X., et al.&nbsp;<a href="https://doi.org/10.5194/essd-16-5357-2024">(2024)</a>. 3D-GloBFP: The first global three-dimensional building footprint dataset. <em>Earth System Science Data</em>, 16, 5357–5374.</span></p>
-</div>
-</div>
-</div>
+</section>
 </section>
 <section id="raster-height-sources" class="level3">
 <h3 class="anchored" data-anchor-id="raster-height-sources">Raster height sources</h3>
@@ -264,8 +259,8 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<section id="prepare-the-city" class="level3">
-<h3 class="anchored" data-anchor-id="prepare-the-city">1. Prepare the city</h3>
+<section id="prepare-inputs" class="level3">
+<h3 class="anchored" data-anchor-id="prepare-inputs">1. Prepare inputs</h3>
 <p>The user supplies a city name and an area of interest (AOI) polygon. The AOI is reprojected to a local UTM zone, which is used for all area and overlap calculations.</p>
 </section>
 <section id="download-footprint-sources" class="level3">
@@ -285,9 +280,8 @@ ul.task-list li input[type="checkbox"] {
 <li>Keep footprints whose interior point (point-on-surface) falls inside the AOI. Footprints are never clipped, so buildings straddling the AOI boundary stay whole.</li>
 </ol>
 <p>Both sources are then put on a common schema. Overture footprints are labelled <code>OpenStreetMap</code> or <code>Overture_nonOSM</code> by their provider and dated by the most recent <code>update_time</code> among their source records. 3D-GloBFP has no per-feature dates, so its footprints are labelled <code>3D-GloBFP_gapfill</code> and given the dataset’s 2020 model vintage.</p>
-</section>
-<section id="resolve-overlapping-footprints" class="level3">
-<h3 class="anchored" data-anchor-id="resolve-overlapping-footprints">4. Resolve overlapping footprints</h3>
+<section id="resolve-overlapping-footprints" class="level4">
+<h4 class="anchored" data-anchor-id="resolve-overlapping-footprints">Resolve overlapping footprints</h4>
 <p>The two sources are pooled, and conflicting footprints are resolved so each building is represented once.</p>
 <ul>
 <li><strong>Conflict rule:</strong> two footprints conflict when their intersection is at least <strong>0.01 m²</strong> <em>and</em> covers at least <strong>20%</strong> of the smaller footprint. Smaller overlaps are treated as boundary slivers and both footprints are kept.</li>
@@ -300,8 +294,9 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>In practice, Overture geometry is kept wherever it exists, and 3D-GloBFP adds buildings that Overture is missing. Every suppressed footprint is recorded in a lineage table alongside the footprint that replaced it.</p>
 </section>
+</section>
 <section id="attribute-the-integrated-footprints" class="level3">
-<h3 class="anchored" data-anchor-id="attribute-the-integrated-footprints">5. Attribute the integrated footprints</h3>
+<h3 class="anchored" data-anchor-id="attribute-the-integrated-footprints">4. Attribute the integrated footprints</h3>
 <p><strong>3D-GloBFP support.</strong> A footprint is <em>supported</em> when a 3D-GloBFP footprint overlaps it by at least 1 m² and 35% of the smaller footprint. This is an independent check that the building exists and does not affect which geometry is selected.</p>
 <p><strong>Preliminary height.</strong> Each footprint takes the first valid value (0.5–100 m) from the following, in priority order:</p>
 <ol type="1">
@@ -338,9 +333,8 @@ ul.task-list li input[type="checkbox"] {
 </table>
 <p>A <code>selection_reason</code> attribute records the source and supporting evidence for each footprint (e.g., <code>OSM_selected_3D_supported</code>).</p>
 <p><strong>Reporting segments.</strong> Each footprint is assigned to the segment containing its interior point. Segments are used for reporting only.</p>
-</section>
-<section id="raster-height-enrichment" class="level3">
-<h3 class="anchored" data-anchor-id="raster-height-enrichment">6. Raster height enrichment</h3>
+<section id="raster-height-enrichment" class="level4">
+<h4 class="anchored" data-anchor-id="raster-height-enrichment">Raster height enrichment</h4>
 <p>The raster height sources are located for the AOI: Google 2.5D tiles via S2-cell manifests, TEMPO tiles via its tile index, and GBA.Height tiles via the official tile index. Each footprint is then sampled at its interior point. Where several rasters cover a point, valid values are averaged. Raster heights are only accepted when they fall within 0.5–100 m and, for Google, building presence is ≥ 0.5, and for TEMPO, building density is ≥ 0.001 (both thresholds are configurable).</p>
 <p>The best height is then recomputed across all six sources, in order of priority:</p>
 <table class="caption-top table">
@@ -386,6 +380,7 @@ ul.task-list li input[type="checkbox"] {
 </table>
 <p>The workflow also records how many sources provided a valid height and the range between them.</p>
 <p><strong>Review flag.</strong> A footprint is flagged for review (<code>review_required</code>) when its geometry confidence is low, or when two or more height sources disagree by more than 5 m.</p>
+</section>
 </section>
 <section id="outputs" class="level3">
 <h3 class="anchored" data-anchor-id="outputs">Outputs</h3>
