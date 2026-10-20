@@ -9,3 +9,7 @@ The Building Scan product generates several key outputs that provide comprehensi
 - **Building Footprints:** Detailed mapping of the spatial extent of each building within the city.
 - **Building Heights:** Information on the vertical dimension of buildings, which is crucial for urban planning and risk assessment.
 - **Building Age:** Information on the age of buildings, which can be important for understanding the historical development of the city and for assessing the need for maintenance or retrofitting.
+
+## Methodology 
+
+Test.
