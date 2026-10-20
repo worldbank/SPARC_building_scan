@@ -158,11 +158,9 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="card-body">
 <p>Integrates public datasets (Overture, OSM, 3D GlobFP), with cleaning to remove duplicates and false positives.</p>
-<p><strong>Output:</strong> Building footprints with estimated height and year, plus a completeness assessment.</p>
-<p><strong>Typical use:</strong> Investment scoping.</p>
 </div>
 <div class="card-footer">
-<p>Accuracy: <span class="badge bg-warning text-dark">Moderate</span></p>
+<p><strong>Typical use:</strong> Investment scoping.</p>
 </div>
 </div>
 </div>
@@ -173,11 +171,9 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="card-body">
 <p>Option 1, supplemented with AI extraction in poorly mapped areas (missing or outdated buildings), using high-resolution satellite imagery and the open-source Segment Anything Model (SAM3).</p>
-<p><strong>Output:</strong> High-coverage building footprints with estimated height and year.</p>
-<p><strong>Typical use:</strong> Analytics informing infrastructure operations.</p>
 </div>
 <div class="card-footer">
-<p>Accuracy: <span class="badge bg-info text-dark">High (~0.8)</span></p>
+<p><strong>Typical use:</strong> Analytics informing infrastructure operations.</p>
 </div>
 </div>
 </div>
@@ -188,17 +184,15 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="card-body">
 <p>Digitization carried out by a specialist firm using procured imagery.</p>
-<p><strong>Output:</strong> Full-coverage building footprints with estimated height and year.</p>
-<p><strong>Typical use:</strong> Taxation, or a complete building registry or cadastral system.</p>
 </div>
 <div class="card-footer">
-<p>Accuracy: <span class="badge bg-success">Very high (~0.9)</span></p>
+<p><strong>Typical use:</strong> Taxation, or a complete building registry or cadastral system.</p>
 </div>
 </div>
 </div>
 </div>
 <table class="table-striped table-hover caption-top table">
-<caption>Comparison of building data options</caption>
+<caption>Comparison of building scan workflows</caption>
 <colgroup>
 <col style="width: 16%">
 <col style="width: 28%">
@@ -216,8 +210,8 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><strong>Approach</strong></td>
-<td>Public datasets (Overture, OSM, 3D GlobFP), cleaned of duplicates and false positives</td>
-<td>Option 1 plus AI extraction (SAM3 on high-res imagery) in poorly mapped areas</td>
+<td>Integration of public datasets and data cleaning to remove duplicates and false positives</td>
+<td>Option 1 plus AI-derived buildings from imagery</td>
 <td>Digitization by a specialist firm using procured imagery</td>
 </tr>
 <tr class="even">
@@ -227,12 +221,18 @@ ul.task-list li input[type="checkbox"] {
 <td>Full-coverage footprints with height and year</td>
 </tr>
 <tr class="odd">
-<td><strong>Typical use</strong></td>
-<td>Investment scoping</td>
-<td>Analytics for infrastructure operations</td>
-<td>Taxation, building registry, cadastre</td>
+<td><strong>Cost</strong></td>
+<td>&lt; $5k</td>
+<td>~$10k</td>
+<td>~30k</td>
 </tr>
 <tr class="even">
+<td><strong>Turnaround</strong></td>
+<td>2 weeks</td>
+<td>4 to 6 weeks</td>
+<td>3-6 months</td>
+</tr>
+<tr class="odd">
 <td><strong>Accuracy</strong></td>
 <td>Moderate</td>
 <td>High (~0.8)</td>
