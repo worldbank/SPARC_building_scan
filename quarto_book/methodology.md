@@ -11,17 +11,21 @@ The Building Scan workflow leverages various open-source geospatial layers to ge
 
 ### Footprint sources
 
+::: {.panel-tabset}
+
 #### Overture Maps Buildings
 
 Overture Maps Buildings is a global vector building layer published by the Overture Maps Foundation. Overture conflates several major open and openly licensed footprint sources — OpenStreetMap (OSM), Google Open Buildings, Microsoft Global ML Building Footprints, Esri, and Meta — into a single layer of roughly 2.3 billion footprints, prioritizing community-contributed OSM geometry over machine-learning-derived sources during conflation.
 
-    [Overture Maps Foundation](https://docs.overturemaps.org/). (2024).
+[[Overture Maps Foundation](https://docs.overturemaps.org/). (2024).]{.small .text-muted}
 
 #### 3D-GloBFP
 
 3D-GloBFP is the first global building-footprint dataset to include a modeled height for every individual building. Its footprint geometries are drawn primarily from Microsoft's Global ML Building Footprints (~1.3 billion structures, ca. 2020) and augmented in East Asia with ~280 million building footprints of Shi et al. (2024), produced with their Comprehensive Large-Scale Mapping (CLSM) framework, to address known coverage gaps in the region.
 
-    Che, Y., Li, X., Liu, X., Wang, Y., Liao, W., Zheng, X., et al. [(2024)](https://doi.org/10.5194/essd-16-5357-2024). 3D-GloBFP: The first global three-dimensional building footprint dataset. Earth System Science Data, 16, 5357–5374.
+[[Che, Y., Li, X., Liu, X., Wang, Y., Liao, W., Zheng, X., et al. [(2024)](https://doi.org/10.5194/essd-16-5357-2024). 3D-GloBFP: The first global three-dimensional building footprint dataset. *Earth System Science Data*, 16, 5357–5374.]{.small .text-muted}
+
+:::
 
 ### Raster height sources
 
@@ -48,7 +52,7 @@ The integration step (`src/1_data_integration`) combines Overture Maps Buildings
 
 ### 1. Prepare the city
 
-The user supplies a city name and an area of interest (AOI) polygon, plus optional reporting segments (e.g., neighborhoods or districts). The AOI is repaired if invalid and reprojected to a local UTM zone (or a user-specified projected CRS), which is used for all area and overlap calculations. Segments are clipped to the AOI; if none are provided, the whole AOI is a single segment. The AOI, segments, and city metadata (CRS, area, WGS84 bounding box) are saved to the city's workspace.
+The user supplies a city name and an area of interest (AOI) polygon. The AOI is reprojected to a local UTM zone, which is used for all area and overlap calculations.
 
 ### 2. Download footprint sources
 

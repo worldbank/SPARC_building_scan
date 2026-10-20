@@ -76,9 +76,9 @@ Each building is attributed with the following variables.
 - **Building Heights:** Information on the vertical dimension of buildings, which is crucial for urban planning and risk assessment.
 - **Building Age:** Information on the age of buildings, which can be important for understanding the historical development of the city and for assessing the need for maintenance or retrofitting.
 
-![Building footprints by year, Juba](images/buildings-year.png){#fig-building-year width="80%" fig-align="center" fig-alt="Map of building outlines across Juba"}
+![Building footprints by year, Juba](quarto_book/images/buildings-year.png){#fig-building-year width="80%" fig-align="center" fig-alt="Map of building outlines across Juba"}
 
-![Building footprints by height, Juba](images/buildings-height.png){#fig-building-height width="80%" fig-align="center" fig-alt="Map of building outlines across Juba"}
+![Building footprints by height, Juba](quarto_book/images/buildings-height.png){#fig-building-height width="80%" fig-align="center" fig-alt="Map of building outlines across Juba"}
 
 ## SPARC Project Background 
 
