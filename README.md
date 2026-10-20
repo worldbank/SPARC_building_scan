@@ -63,7 +63,7 @@ Then create the environment and install dependencies:
 
 ### Running the workflow
 
-The workflow is run as a series of 4 python scripts, which themselves are composed of smaller scripts that handle specific tasks (download, data prep, etc.). The only arguments that need to be passed are the city name, country, path for the city extent file (AOI), and data root (working directory where inputs and outputs are stored).
+The workflow is run as a series of 4 python scripts, which themselves are composed of smaller scripts that handle specific tasks (download, data prep, etc.). The only arguments that need to be passed are `--city-name`, `--country`, `--aoi` (path for the city extent file, typically a GeoJSON), `--data-root` (working directory where inputs and outputs are stored).
 
 Activate the environment as above and run the scripts as follows:
 
@@ -74,15 +74,24 @@ cd src
 
 python 1_data_integration/run_workflow.py ^
   --city-name "Juba" ^
-  --country "South Sudan" ^
-  --aoi C:/Users/WB514197/tmp/sparc/data/SPARC_AOI_Juba.geojson ^
-  --data-root C:/Users/WB514197/tmp/sparc/workflow/ ^
+  --aoi C:/Users/USERNAME/tmp/sparc/data/SPARC_AOI_Juba.geojson ^
+  --data-root C:/Users/USERNAME/tmp/sparc/workflow/ ^
   --skip-gba-height
 ```
 
 > **Note:** gba-height currently raises issues on the WB network.
 
-Alternatively, you can skip activation and run scripts with `uv run`.
+From Mac/linux the commands are identical, but use `\` for line continuation instead of `^`:
+
+```bash
+cd src
+source .venv/bin/activate
+
+python 1_data_integration/run_workflow.py \
+  --city-name "Juba" \
+  --aoi ~/Documents/sparc/juba/SPARC_AOI_Juba.geojson \
+  --data-root ~/sparc/data/
+```
 
 ### Contributing to documentation pages
 

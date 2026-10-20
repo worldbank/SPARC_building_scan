@@ -25,9 +25,8 @@ The full workflow can be summarized as four distinct steps: data integration, da
 
 ## Data Integration
 
-The integration process involves combining two building footprint datasets to create a comprehensive and accurate representation a city's built environment. 
+The integration step combines Overture Maps Buildings and 3D-GloBFP building footprint datasets to create a comprehensive and accurate representation a city's built environment. 
 
 1. Download Overture and 3D-GloBFP for the city’s AOI. 
-2. Augment with 3D-GloBFP where it contributes non-duplicate buildings, keeping the most recent footprint (typically Overture). 
-
-Assign temporary height values, geometry confidence, and review flag. 
+2. Augment with 3D-GloBFP where it contributes non-duplicate buildings, keeping the most recent footprint (typically Overture).
+3. Assign temporary height values, geometry confidence, and review flag.
