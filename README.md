@@ -1,6 +1,6 @@
 # SPARC Building Scan
 
-SPARC Building Scan is a geospatial analysis workflow designed to generate high-quality, analysis-ready building footprints for urban areas.
+SPARC Building Scan is a geospatial workflow designed to generate high-quality, analysis-ready building footprints for urban areas.
 
 ## Repository Structure
 
@@ -61,9 +61,28 @@ Then create the environment and install dependencies:
 
 > **Note:** If a conda environment is active (e.g. `(base)` in your prompt), run `conda deactivate` before using venv or uv. Otherwise the conda environment may be used instead of `.venv`.
 
-### Running the python workflow
+### Running the workflow
 
-Activate the environment as above, or skip activation and run scripts with `uv run`.
+The workflow is run as a series of 4 python scripts, which themselves are composed of smaller scripts that handle specific tasks (download, data prep, etc.). The only arguments that need to be passed are the city name, country, path for the city extent file (AOI), and data root (working directory where inputs and outputs are stored).
+
+Activate the environment as above and run the scripts as follows:
+
+If using windows:
+```bash
+cd src
+.venv\Scripts\activate
+
+python 1_data_integration/run_workflow.py ^
+  --city-name "Juba" ^
+  --country "South Sudan" ^
+  --aoi C:/Users/WB514197/tmp/sparc/data/SPARC_AOI_Juba.geojson ^
+  --data-root C:/Users/WB514197/tmp/sparc/workflow/ ^
+  --skip-gba-height
+```
+
+> **Note:** gba-height currently raises issues on the WB network.
+
+Alternatively, you can skip activation and run scripts with `uv run`.
 
 ### Contributing to documentation pages
 
