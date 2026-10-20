@@ -21,7 +21,7 @@ Overture Maps Buildings is a global vector building layer published by the Overt
 
 3D-GloBFP is the first global building-footprint dataset to include a modeled height for every individual building. Its footprint geometries are drawn primarily from Microsoft's Global ML Building Footprints (~1.3 billion structures, ca. 2020) and augmented in East Asia with ~280 million building footprints of Shi et al. (2024), produced with their Comprehensive Large-Scale Mapping (CLSM) framework, to address known coverage gaps in the region.
 
-[[Che, Y., Li, X., Liu, X., Wang, Y., Liao, W., Zheng, X., et al. [(2024)](https://doi.org/10.5194/essd-16-5357-2024). 3D-GloBFP: The first global three-dimensional building footprint dataset. *Earth System Science Data*, 16, 5357–5374.]{.small .text-muted}
+[Che, Y., Li, X., Liu, X., Wang, Y., Liao, W., Zheng, X., et al. [(2024)](https://doi.org/10.5194/essd-16-5357-2024). 3D-GloBFP: The first global three-dimensional building footprint dataset. *Earth System Science Data*, 16, 5357–5374.]{.small .text-muted}
 
 ### Raster height sources
 
@@ -39,9 +39,9 @@ The full workflow can be summarized as four distinct steps: data integration, da
 
 The integration step (`src/1_data_integration`) combines Overture Maps Buildings and 3D-GloBFP into a single "best-available" footprint layer for a city, with one geometry per building, a best-available height, and attributes describing each footprint's source, confidence, and need for review. `run_workflow.py` runs the scripts below in order; each step can also be run on its own.
 
-| Step | Script | Purpose |
+| Stage | Script | Purpose |
 |---|---|---|
-| 1 | `prepare_city.py` | Set up the city workspace, AOI, and reporting segments |
+| 1 | `prepare_city.py` | Set up the city workspace |
 | 2 | `download_overture.py`, `download_3d_globfp.py` | Download footprint sources for the AOI |
 | 3 | `build_integrated_footprints.py` | Clean, merge, de-duplicate, and attribute footprints |
 | 4 | `acquire_height_sources.py`, `enrich_raster_heights.py` | Attach raster heights and finalize the best height |
@@ -64,8 +64,6 @@ Each source is cleaned independently:
 3. Drop footprints smaller than **4 m²**.
 4. Keep footprints whose interior point (point-on-surface) falls inside the AOI. Footprints are never clipped, so buildings straddling the AOI boundary stay whole.
 
-Both sources are then put on a common schema. Overture footprints are labelled `OpenStreetMap` or `Overture_nonOSM` by their provider and dated by the most recent `update_time` among their source records. 3D-GloBFP has no per-feature dates, so its footprints are labelled `3D-GloBFP_gapfill` and given the dataset's 2020 model vintage.
-
 #### Resolve overlapping footprints
 
 The two sources are pooled, and conflicting footprints are resolved so each building is represented once.
@@ -82,7 +80,7 @@ In practice, Overture geometry is kept wherever it exists, and 3D-GloBFP adds bu
 
 **3D-GloBFP support.** A footprint is *supported* when a 3D-GloBFP footprint overlaps it by at least 1 m² and 35% of the smaller footprint. This is an independent check that the building exists and does not affect which geometry is selected.
 
-**Preliminary height.** Each footprint takes the first valid value (0.5–100 m) from the following, in priority order:
+**Preliminary height.** Each footprint takes the first valid value (0.5–100 m.) from the following, in priority order:
 
 1. Native Overture height
 2. OSM floor count × 3 m (for 1–40 floors)
@@ -96,13 +94,9 @@ In practice, Overture geometry is kept wherever it exists, and 3D-GloBFP adds bu
 | Medium | Any other OSM footprint; non-OSM Overture footprint supported by 3D-GloBFP; 3D-GloBFP footprint with a height |
 | Low | All other footprints |
 
-A `selection_reason` attribute records the source and supporting evidence for each footprint (e.g., `OSM_selected_3D_supported`).
-
-**Reporting segments.** Each footprint is assigned to the segment containing its interior point. Segments are used for reporting only.
-
 #### Raster height enrichment
 
-The raster height sources are located for the AOI: Google 2.5D tiles via S2-cell manifests, TEMPO tiles via its tile index, and GBA.Height tiles via the official tile index. Each footprint is then sampled at its interior point. Where several rasters cover a point, valid values are averaged. Raster heights are only accepted when they fall within 0.5–100 m and, for Google, building presence is ≥ 0.5, and for TEMPO, building density is ≥ 0.001 (both thresholds are configurable).
+The raster height sources are located for the AOI. Each footprint is then sampled at its interior point. Where several rasters cover a point, valid values are averaged. Raster heights are only accepted when they fall within 0.5–100 m. Additionally, building presence must be ≥ 0.5 (for Google), and building density is ≥ 0.001 (for TEMPO).
 
 The best height is then recomputed across all six sources, in order of priority:
 
@@ -114,8 +108,6 @@ The best height is then recomputed across all six sources, in order of priority:
 | 4 | Google 2.5D (2023) | Low |
 | 5 | GBA.Height | Low |
 | 6 | TEMPO (2023 Q4) | Low |
-
-The workflow also records how many sources provided a valid height and the range between them.
 
 **Review flag.** A footprint is flagged for review (`review_required`) when its geometry confidence is low, or when two or more height sources disagree by more than 5 m.
 
