@@ -123,7 +123,10 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#data-sources" id="toc-data-sources" class="nav-link active" data-scroll-target="#data-sources">Data Sources</a></li>
-  <li><a href="#data-integration" id="toc-data-integration" class="nav-link" data-scroll-target="#data-integration">Data Integration</a></li>
+  <li><a href="#data-integration" id="toc-data-integration" class="nav-link" data-scroll-target="#data-integration">Data Integration</a>
+  <ul class="collapse">
+  <li><a href="#key-thresholds" id="toc-key-thresholds" class="nav-link" data-scroll-target="#key-thresholds">Key thresholds</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -170,12 +173,24 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="data-integration">Data Integration</h2>
 <p>The integration step combines Overture Maps Buildings and 3D-GloBFP building footprint datasets to create a comprehensive and accurate representation a city’s built environment.</p>
 <ol type="1">
-<li>Download Overture and 3D-GloBFP for the city’s AOI.</li>
-<li>Augment with 3D-GloBFP where it contributes non-duplicate buildings, keeping the most recent footprint (typically Overture).</li>
+<li>Download building footprint, heights, and supplementary datasets for the city’s AOI.</li>
+<li>Augment Overture with 3D-GloBFP where it contributes non-duplicate buildings. In cases where duplicates come from the same dataset, keep the most recent footprint.</li>
 <li>Assign temporary height values, geometry confidence, and review flag.</li>
 </ol>
+<section id="key-thresholds" class="level3">
+<h3 class="anchored" data-anchor-id="key-thresholds">Key thresholds</h3>
+<ul>
+<li>Start with all footprints of at least 4m².</li>
+<li>Two footprints overlap if their intersection covers at least 20% of the smaller footprint; a 0.01m² tolerance prevents boundary-touching and slivers from being counted as overlap.</li>
+<li>Where footprints overlap, priority is given to Overture (OpenStreetMap), then Overture (non-OSM), and finally 3D-GloBFP.</li>
+<li>Temporary height attribution is assigned from three potential sources (in priority order: Overture, estimate from OSM, or 3D-GloBFP).</li>
+<li>Geometry confidence is set to high for OSM footprints that are either corroborated by an overlapping 3D-GloBFP footprint or carry multiple OSM edit versions; medium for other OSM footprints, non-OSM Overture footprints corroborated by 3D-GloBFP, and 3D-GloBFP gap-fill footprints that carry a height; and low otherwise.</li>
+<li>Corroboration is recorded where a footprint intersects a 3D-GloBFP polygon by at least 1 m² and at least 35% of the smaller footprint.</li>
+<li>A review flag is raised where geometry confidence is low, or where two or more height sources disagree by more than 5 m.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
