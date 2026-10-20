@@ -169,16 +169,19 @@ ul.task-list li input[type="checkbox"] {
 <p>The Building Scan workflow leverages various open-source geospatial layers to generate building footprints and heights.</p>
 <section id="footprint-sources" class="level3">
 <h3 class="anchored" data-anchor-id="footprint-sources">Footprint sources</h3>
-<section id="overture-maps-buildings" class="level4">
-<h4 class="anchored" data-anchor-id="overture-maps-buildings">Overture Maps Buildings</h4>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Overture Maps Buildings</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">3D-GloBFP</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>Overture Maps Buildings is a global vector building layer published by the Overture Maps Foundation. Overture conflates several major open and openly licensed footprint sources — OpenStreetMap (OSM), Google Open Buildings, Microsoft Global ML Building Footprints, Esri, and Meta — into a single layer of roughly 2.3 billion footprints, prioritizing community-contributed OSM geometry over machine-learning-derived sources during conflation.</p>
-<pre><code>[Overture Maps Foundation](https://docs.overturemaps.org/). (2024).</code></pre>
-</section>
-<section id="d-globfp" class="level4">
-<h4 class="anchored" data-anchor-id="d-globfp">3D-GloBFP</h4>
+<p><span class="small text-muted"><a href="https://docs.overturemaps.org/">Overture Maps Foundation</a>. (2024).</span></p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <p>3D-GloBFP is the first global building-footprint dataset to include a modeled height for every individual building. Its footprint geometries are drawn primarily from Microsoft’s Global ML Building Footprints (~1.3 billion structures, ca. 2020) and augmented in East Asia with ~280 million building footprints of Shi et al.&nbsp;(2024), produced with their Comprehensive Large-Scale Mapping (CLSM) framework, to address known coverage gaps in the region.</p>
-<pre><code>Che, Y., Li, X., Liu, X., Wang, Y., Liao, W., Zheng, X., et al. [(2024)](https://doi.org/10.5194/essd-16-5357-2024). 3D-GloBFP: The first global three-dimensional building footprint dataset. Earth System Science Data, 16, 5357–5374.</code></pre>
-</section>
+<p>[<span class="small text-muted">Che, Y., Li, X., Liu, X., Wang, Y., Liao, W., Zheng, X., et al.&nbsp;<a href="https://doi.org/10.5194/essd-16-5357-2024">(2024)</a>. 3D-GloBFP: The first global three-dimensional building footprint dataset. <em>Earth System Science Data</em>, 16, 5357–5374.</span></p>
+</div>
+</div>
+</div>
 </section>
 <section id="raster-height-sources" class="level3">
 <h3 class="anchored" data-anchor-id="raster-height-sources">Raster height sources</h3>
@@ -263,7 +266,7 @@ ul.task-list li input[type="checkbox"] {
 </table>
 <section id="prepare-the-city" class="level3">
 <h3 class="anchored" data-anchor-id="prepare-the-city">1. Prepare the city</h3>
-<p>The user supplies a city name and an area of interest (AOI) polygon, plus optional reporting segments (e.g., neighborhoods or districts). The AOI is repaired if invalid and reprojected to a local UTM zone (or a user-specified projected CRS), which is used for all area and overlap calculations. Segments are clipped to the AOI; if none are provided, the whole AOI is a single segment. The AOI, segments, and city metadata (CRS, area, WGS84 bounding box) are saved to the city’s workspace.</p>
+<p>The user supplies a city name and an area of interest (AOI) polygon. The AOI is reprojected to a local UTM zone, which is used for all area and overlap calculations.</p>
 </section>
 <section id="download-footprint-sources" class="level3">
 <h3 class="anchored" data-anchor-id="download-footprint-sources">2. Download footprint sources</h3>
