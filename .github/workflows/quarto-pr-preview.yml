@@ -39,6 +39,7 @@ jobs:
         with:
           name: quarto-docs-pr-${{ github.event.number }}
           path: docs/
+          if-no-files-found: error
 
   publish-preview:
     runs-on: ubuntu-latest

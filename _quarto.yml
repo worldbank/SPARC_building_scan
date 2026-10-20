@@ -1,9 +1,9 @@
 project:
   type: website
-  output-dir: quarto
+  output-dir: docs
   resources:
     - quarto_book/building_footprints.html
-    - docs/Danané_building_footprints.html
+    - quarto_book/Danané_building_footprints.html
 
 website:
   title: "SPARC Building Scan"
