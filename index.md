@@ -5,30 +5,77 @@ Welcome to the [SPARC](https://www.worldbank.org/en/topic/urbandevelopment/brief
 Tier 2 of the SPARC program focuses on tailored analytical products for individual cities. The Building Scan product is designed to provide detailed insights into the building stock of a city, including information on building types, heights, footprints, and other relevant attributes. This enables city planners, policymakers, and investors to make informed decisions regarding urban development, infrastructure planning, and risk assessment.
 
 ## Building Scan Workflows
-The Building Scan product generates the best analysis-ready building footprints for a given city. Building footprints are detailed, digitized, polygons of the building stock over an area of interest. They are a foundational data layer critical to inform urban planning, climate risk and resilience analytics, infrastructure/service gaps and cadastral systems.
 
-Project teams often default to public data sources such as Open Street Map or Google Buildings. While these are excellent options, the accuracy of these public datasets varies greatly by location. Buildings from these sources are often outdated, missing in informal and recently developed areas, contain faulty polygons, or lack critical attribute information. The Building Scan product provides a consolidated workflow to help teams acquire the best building layer via three possible options.
+The Building Scan product generates high-quality, analysis-ready building footprints for a given city. Building footprints are digitized polygons outlining each building across an area of interest. They are a foundational data layer for urban planning, climate risk and resilience analytics, assessments of infrastructure and service gaps, and cadastral systems.
 
-### Option 1 — Open-Source Layers
-Data integration of public datasets (Overture, OSM, 3D GlobFP), with data cleaning to remove duplicates and false positives.
+Project teams often default to public sources such as OpenStreetMap or Google Open Buildings. While these are valuable resources, their accuracy varies greatly by location. Their buildings may be outdated or missing in informal and recently developed areas, contain faulty polygons, or lack key attributes. Building Scan provides a consolidated workflow to help teams obtain the most suitable building layer through one of three options.
 
-- **Output**: Building footprints (with estimated height and year), plus completeness assessment.
-- **Typical Use Case**: Investment scoping.
-- **Accuracy**: Moderate.
+:::::: {.grid}
 
-### Option 2 — AI Extraction
-Option 1 supplemented with AI extraction in areas flagged as being poorly mapped (with missing or outdated buildings). AI extraction relies on high resolution satellite imagery and the open-source segment anything model (SAM3).
+::::: {.g-col-12 .g-col-md-4}
+:::: {.card .h-100}
+::: {.card-header}
+**Option 1 — Open-Source Layers**
+:::
+::: {.card-body}
+Integrates public datasets (Overture, OSM, 3D GlobFP), with cleaning to remove duplicates and false positives.
 
-- **Output**: High-coverage building footprints (with estimated height and year).
-- **Typical Use Case**: Analytics informing infrastructure operations.
-- **Accuracy**: High (~0.8).
+**Output:** Building footprints with estimated height and year, plus a completeness assessment.
 
-### Option 3 — Manual Digitization
-Digitization carried out by a firm with procred imagery.
+**Typical use:** Investment scoping.
+:::
+::: {.card-footer}
+Accuracy: [Moderate]{.badge .bg-warning .text-dark}
+:::
+::::
+:::::
 
-- **Output**: Full-coverage building footprints (with estimated height and year).
-- **Typical Use Case**: Taxation, need for complete building registry or cadastral system.
-- **Accuracy**: Very high (~0.9/95).
+::::: {.g-col-12 .g-col-md-4}
+:::: {.card .h-100}
+::: {.card-header}
+**Option 2 — AI Extraction**
+:::
+::: {.card-body}
+Option 1, supplemented with AI extraction in poorly mapped areas (missing or outdated buildings), using high-resolution satellite imagery and the open-source Segment Anything Model (SAM3).
+
+**Output:** High-coverage building footprints with estimated height and year.
+
+**Typical use:** Analytics informing infrastructure operations.
+:::
+::: {.card-footer}
+Accuracy: [High (~0.8)]{.badge .bg-info .text-dark}
+:::
+::::
+:::::
+
+::::: {.g-col-12 .g-col-md-4}
+:::: {.card .h-100}
+::: {.card-header}
+**Option 3 — Manual Digitization**
+:::
+::: {.card-body}
+Digitization carried out by a specialist firm using procured imagery.
+
+**Output:** Full-coverage building footprints with estimated height and year.
+
+**Typical use:** Taxation, or a complete building registry or cadastral system.
+:::
+::: {.card-footer}
+Accuracy: [Very high (~0.9)]{.badge .bg-success}
+:::
+::::
+:::::
+
+::::::
+
+|                  | Option 1 — Open-Source Layers | Option 2 — AI Extraction | Option 3 — Manual Digitization |
+|------------------|-------------------------------|--------------------------|--------------------------------|
+| **Approach**     | Public datasets (Overture, OSM, 3D GlobFP), cleaned of duplicates and false positives | Option 1 plus AI extraction (SAM3 on high-res imagery) in poorly mapped areas | Digitization by a specialist firm using procured imagery |
+| **Output**       | Footprints with height and year, plus completeness assessment | High-coverage footprints with height and year | Full-coverage footprints with height and year |
+| **Typical use**  | Investment scoping | Analytics for infrastructure operations | Taxation, building registry, cadastre |
+| **Accuracy**     | Moderate | High (~0.8) | Very high (~0.9) |
+
+: Comparison of building data options {.striped .hover}
 
 ## Data Attributes
 
