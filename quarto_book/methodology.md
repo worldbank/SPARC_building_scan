@@ -37,7 +37,7 @@ The full workflow has four distinct steps: data integration, data cleaning, flag
 
 ## 1) Data Integration
 
-The integration step (`src/1_data_integration`) combines Overture Maps Buildings and 3D-GloBFP into a single "best-available" footprint layer for a city, with one geometry per building, a best-available height, and attributes describing each footprint's source, confidence, and need for review. `run_workflow.py` runs the scripts below in order; each step can also be run on its own.
+The integration step (`src/1_data_integration`) combines Overture Maps Buildings and 3D-GloBFP into a single "best-available" footprint layer for a city, with one geometry per building, a best-available height, and attributes describing each footprint's source, confidence, and need for review. `run_workflow.py` runs the scripts below in order.
 
 | Stage | Script | Purpose |
 |---|---|---|
@@ -121,21 +121,51 @@ Outputs are written to `<data-root>/<city>/outputs/`:
 - `height_enrichment_metadata.json`: raster sources, bands, thresholds, and height priority order
 - `overview.png`: maps of the selected geometry source and best vector height
 
-## 2) Data Cleaning 
+## 2) Data Cleaning
 
-1. Remove footprints smaller than 16m². 
-2. Identify potential false positives by attributing three 10m raster datasets: 
-    - Alpha Earth Embeddings (mean values from 64 bands). 
-    - Dynamic World Land Cover (mean value from top class). 
-    - Google 2.5D building presence confidence (max. value). 
+The cleaning step (`src/2_data_cleaning`) removes likely false positives from the integrated footprints using satellite-derived evidence of whether a building is present. It then adds neighborhood statistics for later review. `run_workflow.py` runs the scripts below in order; each step can also be run on its own.
 
-### Key thresholds
+| Stage | Script | Purpose |
+|---|---|---|
+| 0 | `0_get_gee_data.py` | Attach Earth Engine land-cover, embedding, and building-presence values to each footprint |
+| 1 | `1_detect_outliers.py` | Flag embedding outliers with an Isolation Forest |
+| 2 | `2_drop_false_positives.py` | Drop footprints with evidence of being false positives |
+| 3 | `3_finalize_buildings.py` | Compute neighbor statistics |
 
-- Start with all footprints of at least 4m². 
-- An outlier label is assigned with embeddings using an Isolation Forest algorithm (contamination rate of 0.05 and 300 estimators). 
-- Building presence confidence is converted to categories: low < 0.1, medium < 0.5, high ≥ 0.5, and no data. 
-- Two conditions flag a footprint for removal: 
-  - Embedding evidence: Footprint is an embedding outlier, dynamic world is non-built (or built with probability below 0.6), and geometry confidence is not high. 
-  - Presence evidence: Maximum building presence confidence is low (< 0.1). Only applies to footprints predating 2024, since the dataset ends in 2023. 
+### 2.1. Attach remote-sensing evidence
 
-A footprint with a recent Overture source year (2023 or later) is safeguarded from the removal flags. 
+We start from all integrated footprints (≥ 4 m², from step 1) and use Google Earth Engine to summarize three raster datasets over each footprint:
+
+| Dataset | Year | Resolution | Footprint value |
+|---|---|---|---|
+| AlphaEarth satellite embeddings | 2025 | 10 m | Mean of each of the 64 embedding bands |
+| Dynamic World land cover | 2025 | 10 m | Class with the highest mean probability (annual mean, then footprint mean) and that probability |
+| Google Open Buildings 2.5D building presence | 2023 | 4 m | Maximum presence confidence (annual maximum, then footprint maximum) |
+
+### 2.2. Detect embedding outliers
+
+Footprints whose embeddings differ markedly from the rest of the city are likely to be something other than a building (e.g., vegetation, bare ground, or water). We standardize the 64 embedding bands and fit an Isolation Forest (**300** estimators, contamination rate of **0.05**), which labels the most anomalous 5% of footprints in each city as candidate outliers. These candidates are then narrowed by the conditions in 2.3.
+
+### 2.3. Drop false positives
+
+A footprint is removed when either of two conditions holds:
+
+- **Embedding evidence:** the footprint is an embedding outlier, its top Dynamic World class is not built (or is built with a probability below **0.6**), and its geometry confidence is not high.
+- **Presence evidence:** its maximum Google 2.5D presence confidence is **≤ 0.1**, and its footprint date is before **2024**. Google 2.5D ends in 2023, so it cannot confirm buildings mapped afterward. Footprints with no date or no Google 2.5D coverage are not tested.
+
+Two safeguards override both conditions. A footprint is always kept if:
+
+- it comes from Overture and its footprint date is **2023 or later**, or
+- its top Dynamic World class is built with a probability of at least **0.6**.
+
+### 2.4. Compute neighbor statistics
+
+For each footprint, we find all other footprints within **50 m** (edge-to-edge) and record their number, the mean, minimum, and maximum of their areas, and the mean, minimum, and maximum of their distances. These support the next step: reviewing urban areas.
+
+### Outputs
+
+The cleaned footprints are written to `<data-root>/<city>/outputs/best_available_footprints_cleaned.gpkg`, with all step 1 attributes plus the Earth Engine values, outlier scores, and neighbor statistics. Intermediate results are kept in `<data-root>/<city>/sources/`:
+
+- `gee/`: footprints with Earth Engine values (`.gpkg` and `.csv`)
+- `gee/outlier_results/`: footprints with Isolation Forest results and t-SNE diagnostic plots
+- `cleaning/`: footprints remaining after false positives are dropped
