@@ -25,7 +25,7 @@ Overture Maps Buildings is a global vector building layer published by the Overt
 
 ### Raster height sources
 
-Three gridded height products are sampled to fill heights where no vector height is available. They describe the raster cell containing a building, not the building itself, and are therefore treated as low-confidence estimates.
+We sample three gridded height products to fill heights where no vector height is available. They describe the raster cell containing a building, not the building itself, so they are treated as low-confidence estimates.
 
 | Source | Vintage | Bands used | Access |
 |---|---|---|---|
@@ -33,7 +33,7 @@ Three gridded height products are sampled to fill heights where no vector height
 | GBA.Height (Global Building Atlas) | — | Band 1 height (m), 3 m resolution | GeoTIFF tiles extracted from the official mediaTUM ZIP archives |
 | TEMPO | 2023 Q4 | Band 1 building density, band 2 normalized height (× 100 m) | COGs, streamed by default or optionally downloaded |
 
-The full workflow can be summarized as four distinct steps: data integration, data cleaning, flagging urban areas for review, and height attribution. Preliminary heights are attached during data integration and refined in the height attribution step.
+The full workflow has four distinct steps: data integration, data cleaning, flagging urban areas for review, and height attribution. Preliminary heights are attached during data integration and refined in the height attribution step.
 
 ## Data Integration
 
@@ -43,7 +43,7 @@ The integration step (`src/1_data_integration`) combines Overture Maps Buildings
 |---|---|---|
 | 1 | `prepare_city.py` | Set up the city workspace |
 | 2 | `download_overture.py`, `download_3d_globfp.py` | Download footprint sources for the AOI |
-| 3 | `build_integrated_footprints.py` | Clean, merge, de-duplicate, and attribute footprints |
+| 3 | `build_integrated_footprints.py` | Clean, merge, deduplicate, and attribute footprints |
 | 4 | `acquire_height_sources.py`, `enrich_raster_heights.py` | Attach raster heights and finalize the best height |
 
 ### 1. Prepare inputs
@@ -53,7 +53,7 @@ The user supplies a city name and an area of interest (AOI) polygon. The AOI is 
 ### 2. Download footprint sources
 
 - **Overture:** buildings within the AOI's bounding box are downloaded as GeoParquet using the `overturemaps` CLI.
-- **3D-GloBFP:** the tile catalogue is read from Figshare, every tile intersecting the AOI bounding box is downloaded, verified against its MD5 checksum, and extracted.
+- **3D-GloBFP:** the tile catalog is read from Figshare, every tile intersecting the AOI bounding box is downloaded, verified against its MD5 checksum, and extracted.
 
 ### 3. Clean and harmonize
 
@@ -68,10 +68,10 @@ Each source is cleaned independently:
 
 The two sources are pooled, and conflicting footprints are resolved so each building is represented once.
 
-- **Conflict rule:** two footprints conflict when their intersection is at least **0.01 m²** *and* covers at least **20%** of the smaller footprint. Smaller overlaps are treated as boundary slivers and both footprints are kept.
+- **Conflict rule:** two footprints conflict when their intersection is at least **0.01 m²** *and* covers at least **20%** of the smaller footprint. Smaller overlaps are treated as boundary slivers, and both footprints are kept.
 - **Ranking:** candidates are ranked by source priority (OpenStreetMap > Overture non-OSM > 3D-GloBFP), then by footprint date (most recent first), then by ID.
-  - *Why source before date:* footprint dates are not comparable across sources. The 3D-GloBFP date is the dataset's 2020 vintage, not when each building was observed, and Overture's `update_time` records when a record was last edited or ingested, not when the building was captured. Within a source, dates are more consistent and are used to break ties. OSM ranks above other Overture sources because human-digitized geometry is generally more accurate than machine-learning-derived footprints.
-  - *Trade-off:* an outdated footprint from a higher-priority source (e.g., a demolished building still in OSM) is kept over a newer, lower-priority one. Such cases are left for the later cleaning and review steps.
+  - *Why source before date:* footprint dates are not comparable across sources. The 3D-GloBFP date is the dataset's 2020 vintage, not when each building was observed, and Overture's `update_time` records when a record was last edited or ingested, not when the building was captured. Within a source, dates are more consistent and break ties. OSM ranks above other Overture sources because human-digitized geometry is generally more accurate than machine-learning-derived footprints.
+  - *Trade-off:* an outdated footprint from a higher-priority source (e.g., a demolished building still in OSM) is kept over a newer, lower-priority one. We leave such cases for later cleaning and review steps.
 - **Selection:** footprints are visited in rank order. A footprint is kept unless it conflicts with one already kept, in which case it is suppressed.
 
 In practice, Overture geometry is kept wherever it exists, and 3D-GloBFP adds buildings that Overture is missing. Every suppressed footprint is recorded in a lineage table alongside the footprint that replaced it.
@@ -96,7 +96,7 @@ In practice, Overture geometry is kept wherever it exists, and 3D-GloBFP adds bu
 
 #### Raster height enrichment
 
-The raster height sources are located for the AOI. Each footprint is then sampled at its interior point. Where several rasters cover a point, valid values are averaged. Raster heights are only accepted when they fall within 0.5–100 m. Additionally, building presence must be ≥ 0.5 (for Google), and building density is ≥ 0.001 (for TEMPO).
+The raster height sources are located for the AOI. We then sample each footprint at its interior point. Where several rasters cover a point, valid values are averaged. Raster heights are only accepted when they fall within 0.5–100 m. Additionally, building presence must be ≥ 0.5 (for Google), and building density is ≥ 0.001 (for TEMPO).
 
 The best height is then recomputed across all six sources, in order of priority:
 
