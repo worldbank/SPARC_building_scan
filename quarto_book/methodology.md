@@ -66,7 +66,7 @@ Each source is cleaned independently:
 
 #### Resolve overlapping footprints
 
-The two sources are pooled, and conflicting footprints are resolved so each building is represented once.
+We pool the two sources and resolve conflicting footprints so each building is represented once.
 
 - **Conflict rule:** two footprints conflict when their intersection is at least **0.01 m²** *and* covers at least **20%** of the smaller footprint. Smaller overlaps are treated as boundary slivers, and both footprints are kept.
 - **Ranking:** candidates are ranked by source priority (OpenStreetMap > Overture non-OSM > 3D-GloBFP), then by footprint date (most recent first), then by ID.
