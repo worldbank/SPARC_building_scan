@@ -9,12 +9,12 @@ website:
   title: "SPARC Building Scan"
   navbar:
     left:
-      - href: quarto_book/intro_to_building_scan.md
+      - href: index.md
         text: Building Scan
-      - href: quarto_book/sparc_introduction.md
-        text: What is SPARC?
-      - href: notebooks/SPARC_building_scan_example.ipynb
-        text: Analysis Notebook
+      - href: quarto_book/methodology.md
+        text: Methodology
+      - href: quarto_book/validation.md
+        text: Validation
 
 format:
   html:
