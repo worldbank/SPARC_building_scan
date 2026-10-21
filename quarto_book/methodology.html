@@ -127,13 +127,21 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#footprint-sources" id="toc-footprint-sources" class="nav-link" data-scroll-target="#footprint-sources">Footprint sources</a></li>
   <li><a href="#raster-height-sources" id="toc-raster-height-sources" class="nav-link" data-scroll-target="#raster-height-sources">Raster height sources</a></li>
   </ul></li>
-  <li><a href="#data-integration" id="toc-data-integration" class="nav-link" data-scroll-target="#data-integration">Data Integration</a>
+  <li><a href="#data-integration" id="toc-data-integration" class="nav-link" data-scroll-target="#data-integration">1) Data Integration</a>
   <ul class="collapse">
-  <li><a href="#prepare-inputs" id="toc-prepare-inputs" class="nav-link" data-scroll-target="#prepare-inputs">1. Prepare inputs</a></li>
-  <li><a href="#download-footprint-sources" id="toc-download-footprint-sources" class="nav-link" data-scroll-target="#download-footprint-sources">2. Download footprint sources</a></li>
-  <li><a href="#clean-and-harmonize" id="toc-clean-and-harmonize" class="nav-link" data-scroll-target="#clean-and-harmonize">3. Clean and harmonize</a></li>
-  <li><a href="#attribute-the-integrated-footprints" id="toc-attribute-the-integrated-footprints" class="nav-link" data-scroll-target="#attribute-the-integrated-footprints">4. Attribute the integrated footprints</a></li>
+  <li><a href="#prepare-inputs" id="toc-prepare-inputs" class="nav-link" data-scroll-target="#prepare-inputs">1.1. Prepare inputs</a></li>
+  <li><a href="#download-footprint-sources" id="toc-download-footprint-sources" class="nav-link" data-scroll-target="#download-footprint-sources">1.2. Download footprint sources</a></li>
+  <li><a href="#clean-and-harmonize" id="toc-clean-and-harmonize" class="nav-link" data-scroll-target="#clean-and-harmonize">1.3. Clean and harmonize</a></li>
+  <li><a href="#attribute-the-integrated-footprints" id="toc-attribute-the-integrated-footprints" class="nav-link" data-scroll-target="#attribute-the-integrated-footprints">1.4. Attribute the integrated footprints</a></li>
   <li><a href="#outputs" id="toc-outputs" class="nav-link" data-scroll-target="#outputs">Outputs</a></li>
+  </ul></li>
+  <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning">2) Data Cleaning</a>
+  <ul class="collapse">
+  <li><a href="#attach-remote-sensing-evidence" id="toc-attach-remote-sensing-evidence" class="nav-link" data-scroll-target="#attach-remote-sensing-evidence">2.1. Attach remote-sensing evidence</a></li>
+  <li><a href="#detect-embedding-outliers" id="toc-detect-embedding-outliers" class="nav-link" data-scroll-target="#detect-embedding-outliers">2.2. Detect embedding outliers</a></li>
+  <li><a href="#drop-false-positives" id="toc-drop-false-positives" class="nav-link" data-scroll-target="#drop-false-positives">2.3. Drop false positives</a></li>
+  <li><a href="#compute-neighbor-statistics" id="toc-compute-neighbor-statistics" class="nav-link" data-scroll-target="#compute-neighbor-statistics">2.4. Compute neighbor statistics</a></li>
+  <li><a href="#outputs-1" id="toc-outputs-1" class="nav-link" data-scroll-target="#outputs-1">Outputs</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -221,8 +229,8 @@ ul.task-list li input[type="checkbox"] {
 </section>
 </section>
 <section id="data-integration" class="level2">
-<h2 class="anchored" data-anchor-id="data-integration">Data Integration</h2>
-<p>The integration step (<code>src/1_data_integration</code>) combines Overture Maps Buildings and 3D-GloBFP into a single “best-available” footprint layer for a city, with one geometry per building, a best-available height, and attributes describing each footprint’s source, confidence, and need for review. <code>run_workflow.py</code> runs the scripts below in order; each step can also be run on its own.</p>
+<h2 class="anchored" data-anchor-id="data-integration">1) Data Integration</h2>
+<p>The integration step (<code>src/1_data_integration</code>) combines Overture Maps Buildings and 3D-GloBFP into a single “best-available” footprint layer for a city, with one geometry per building, a best-available height, and attributes describing each footprint’s source, confidence, and need for review. <code>run_workflow.py</code> runs the scripts below in order.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -260,18 +268,18 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <section id="prepare-inputs" class="level3">
-<h3 class="anchored" data-anchor-id="prepare-inputs">1. Prepare inputs</h3>
+<h3 class="anchored" data-anchor-id="prepare-inputs">1.1. Prepare inputs</h3>
 <p>The user supplies a city name and an area of interest (AOI) polygon. The AOI is reprojected to a local UTM zone, which is used for all area and overlap calculations.</p>
 </section>
 <section id="download-footprint-sources" class="level3">
-<h3 class="anchored" data-anchor-id="download-footprint-sources">2. Download footprint sources</h3>
+<h3 class="anchored" data-anchor-id="download-footprint-sources">1.2. Download footprint sources</h3>
 <ul>
 <li><strong>Overture:</strong> buildings within the AOI’s bounding box are downloaded as GeoParquet using the <code>overturemaps</code> CLI.</li>
 <li><strong>3D-GloBFP:</strong> the tile catalog is read from Figshare, every tile intersecting the AOI bounding box is downloaded, verified against its MD5 checksum, and extracted.</li>
 </ul>
 </section>
 <section id="clean-and-harmonize" class="level3">
-<h3 class="anchored" data-anchor-id="clean-and-harmonize">3. Clean and harmonize</h3>
+<h3 class="anchored" data-anchor-id="clean-and-harmonize">1.3. Clean and harmonize</h3>
 <p>Each source is cleaned independently:</p>
 <ol type="1">
 <li>Reproject to the analysis CRS.</li>
@@ -295,7 +303,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 </section>
 <section id="attribute-the-integrated-footprints" class="level3">
-<h3 class="anchored" data-anchor-id="attribute-the-integrated-footprints">4. Attribute the integrated footprints</h3>
+<h3 class="anchored" data-anchor-id="attribute-the-integrated-footprints">1.4. Attribute the integrated footprints</h3>
 <p><strong>3D-GloBFP support.</strong> A footprint is <em>supported</em> when a 3D-GloBFP footprint overlaps it by at least 1 m² and 35% of the smaller footprint. This is an independent check that the building exists and does not affect which geometry is selected.</p>
 <p><strong>Preliminary height.</strong> Each footprint takes the first valid value (0.5–100 m.) from the following, in priority order:</p>
 <ol type="1">
@@ -387,6 +395,116 @@ ul.task-list li input[type="checkbox"] {
 <li><code>summary.json</code>: input and output counts, source breakdown, and parameters used</li>
 <li><code>height_enrichment_metadata.json</code>: raster sources, bands, thresholds, and height priority order</li>
 <li><code>overview.png</code>: maps of the selected geometry source and best vector height</li>
+</ul>
+</section>
+</section>
+<section id="data-cleaning" class="level2">
+<h2 class="anchored" data-anchor-id="data-cleaning">2) Data Cleaning</h2>
+<p>The cleaning step (<code>src/2_data_cleaning</code>) removes likely false positives from the integrated footprints using satellite-derived evidence of whether a building is present. It then adds neighborhood statistics for later review. <code>run_workflow.py</code> runs the scripts below in order; each step can also be run on its own.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Stage</th>
+<th>Script</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td><code>0_get_gee_data.py</code></td>
+<td>Attach Earth Engine land-cover, embedding, and building-presence values to each footprint</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td><code>1_detect_outliers.py</code></td>
+<td>Flag embedding outliers with an Isolation Forest</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td><code>2_drop_false_positives.py</code></td>
+<td>Drop footprints with evidence of being false positives</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td><code>3_finalize_buildings.py</code></td>
+<td>Compute neighbor statistics</td>
+</tr>
+</tbody>
+</table>
+<section id="attach-remote-sensing-evidence" class="level3">
+<h3 class="anchored" data-anchor-id="attach-remote-sensing-evidence">2.1. Attach remote-sensing evidence</h3>
+<p>We start from all integrated footprints (≥ 4 m², from step 1) and use Google Earth Engine to summarize three raster datasets over each footprint:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dataset</th>
+<th>Year</th>
+<th>Resolution</th>
+<th>Footprint value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AlphaEarth satellite embeddings</td>
+<td>2025</td>
+<td>10 m</td>
+<td>Mean of each of the 64 embedding bands</td>
+</tr>
+<tr class="even">
+<td>Dynamic World land cover</td>
+<td>2025</td>
+<td>10 m</td>
+<td>Class with the highest mean probability (annual mean, then footprint mean) and that probability</td>
+</tr>
+<tr class="odd">
+<td>Google Open Buildings 2.5D building presence</td>
+<td>2023</td>
+<td>4 m</td>
+<td>Maximum presence confidence (annual maximum, then footprint maximum)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="detect-embedding-outliers" class="level3">
+<h3 class="anchored" data-anchor-id="detect-embedding-outliers">2.2. Detect embedding outliers</h3>
+<p>Footprints whose embeddings differ markedly from the rest of the city are likely to be something other than a building (e.g., vegetation, bare ground, or water). We standardize the 64 embedding bands and fit an Isolation Forest (<strong>300</strong> estimators, contamination rate of <strong>0.05</strong>), which labels the most anomalous 5% of footprints in each city as candidate outliers. These candidates are then narrowed by the conditions in 2.3.</p>
+</section>
+<section id="drop-false-positives" class="level3">
+<h3 class="anchored" data-anchor-id="drop-false-positives">2.3. Drop false positives</h3>
+<p>A footprint is removed when either of two conditions holds:</p>
+<ul>
+<li><strong>Embedding evidence:</strong> the footprint is an embedding outlier, its top Dynamic World class is not built (or is built with a probability below <strong>0.6</strong>), and its geometry confidence is not high.</li>
+<li><strong>Presence evidence:</strong> its maximum Google 2.5D presence confidence is <strong>≤ 0.1</strong>, and its footprint date is before <strong>2024</strong>. Google 2.5D ends in 2023, so it cannot confirm buildings mapped afterward. Footprints with no date or no Google 2.5D coverage are not tested.</li>
+</ul>
+<p>Two safeguards override both conditions. A footprint is always kept if:</p>
+<ul>
+<li>it comes from Overture and its footprint date is <strong>2023 or later</strong>, or</li>
+<li>its top Dynamic World class is built with a probability of at least <strong>0.6</strong>.</li>
+</ul>
+</section>
+<section id="compute-neighbor-statistics" class="level3">
+<h3 class="anchored" data-anchor-id="compute-neighbor-statistics">2.4. Compute neighbor statistics</h3>
+<p>For each footprint, we find all other footprints within <strong>50 m</strong> (edge-to-edge) and record their number, the mean, minimum, and maximum of their areas, and the mean, minimum, and maximum of their distances. These support the next step: reviewing urban areas.</p>
+</section>
+<section id="outputs-1" class="level3">
+<h3 class="anchored" data-anchor-id="outputs-1">Outputs</h3>
+<p>The cleaned footprints are written to <code>&lt;data-root&gt;/&lt;city&gt;/outputs/best_available_footprints_cleaned.gpkg</code>, with all step 1 attributes plus the Earth Engine values, outlier scores, and neighbor statistics. Intermediate results are kept in <code>&lt;data-root&gt;/&lt;city&gt;/sources/</code>:</p>
+<ul>
+<li><code>gee/</code>: footprints with Earth Engine values (<code>.gpkg</code> and <code>.csv</code>)</li>
+<li><code>gee/outlier_results/</code>: footprints with Isolation Forest results and t-SNE diagnostic plots</li>
+<li><code>cleaning/</code>: footprints remaining after false positives are dropped</li>
 </ul>
 
 
