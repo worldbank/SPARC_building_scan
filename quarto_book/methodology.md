@@ -35,9 +35,9 @@ We sample three gridded height products to fill heights where no vector height i
 
 The full workflow has four distinct steps: data integration, data cleaning, flagging urban areas for review, and height attribution. Preliminary heights are attached during data integration and refined in the height attribution step.
 
-## Data Integration
+## 1) Data Integration
 
-The integration step (`src/1_data_integration`) combines Overture Maps Buildings and 3D-GloBFP into a single "best-available" footprint layer for a city, with one geometry per building, a best-available height, and attributes describing each footprint's source, confidence, and need for review. `run_workflow.py` runs the scripts below in order; each step can also be run on its own.
+The integration step (`src/1_data_integration`) combines Overture Maps Buildings and 3D-GloBFP into a single "best-available" footprint layer for a city, with one geometry per building, a best-available height, and attributes describing each footprint's source, confidence, and need for review. `run_workflow.py` runs the scripts below in order.
 
 | Stage | Script | Purpose |
 |---|---|---|
@@ -46,16 +46,16 @@ The integration step (`src/1_data_integration`) combines Overture Maps Buildings
 | 3 | `build_integrated_footprints.py` | Clean, merge, deduplicate, and attribute footprints |
 | 4 | `acquire_height_sources.py`, `enrich_raster_heights.py` | Attach raster heights and finalize the best height |
 
-### 1. Prepare inputs
+### 1.1. Prepare inputs
 
 The user supplies a city name and an area of interest (AOI) polygon. The AOI is reprojected to a local UTM zone, which is used for all area and overlap calculations.
 
-### 2. Download footprint sources
+### 1.2. Download footprint sources
 
 - **Overture:** buildings within the AOI's bounding box are downloaded as GeoParquet using the `overturemaps` CLI.
 - **3D-GloBFP:** the tile catalog is read from Figshare, every tile intersecting the AOI bounding box is downloaded, verified against its MD5 checksum, and extracted.
 
-### 3. Clean and harmonize
+### 1.3. Clean and harmonize
 
 Each source is cleaned independently:
 
@@ -76,7 +76,7 @@ We pool the two sources and resolve conflicting footprints so each building is r
 
 In practice, Overture geometry is kept wherever it exists, and 3D-GloBFP adds buildings that Overture is missing. Every suppressed footprint is recorded in a lineage table alongside the footprint that replaced it.
 
-### 4. Attribute the integrated footprints
+### 1.4. Attribute the integrated footprints
 
 **3D-GloBFP support.** A footprint is *supported* when a 3D-GloBFP footprint overlaps it by at least 1 m² and 35% of the smaller footprint. This is an independent check that the building exists and does not affect which geometry is selected.
 
@@ -120,3 +120,52 @@ Outputs are written to `<data-root>/<city>/outputs/`:
 - `summary.json`: input and output counts, source breakdown, and parameters used
 - `height_enrichment_metadata.json`: raster sources, bands, thresholds, and height priority order
 - `overview.png`: maps of the selected geometry source and best vector height
+
+## 2) Data Cleaning
+
+The cleaning step (`src/2_data_cleaning`) removes likely false positives from the integrated footprints using satellite-derived evidence of whether a building is present. It then adds neighborhood statistics for later review. `run_workflow.py` runs the scripts below in order; each step can also be run on its own.
+
+| Stage | Script | Purpose |
+|---|---|---|
+| 0 | `0_get_gee_data.py` | Attach Earth Engine land-cover, embedding, and building-presence values to each footprint |
+| 1 | `1_detect_outliers.py` | Flag embedding outliers with an Isolation Forest |
+| 2 | `2_drop_false_positives.py` | Drop footprints with evidence of being false positives |
+| 3 | `3_finalize_buildings.py` | Compute neighbor statistics |
+
+### 2.1. Attach remote-sensing evidence
+
+We start from all integrated footprints (≥ 4 m², from step 1) and use Google Earth Engine to summarize three raster datasets over each footprint:
+
+| Dataset | Year | Resolution | Footprint value |
+|---|---|---|---|
+| AlphaEarth satellite embeddings | 2025 | 10 m | Mean of each of the 64 embedding bands |
+| Dynamic World land cover | 2025 | 10 m | Class with the highest mean probability (annual mean, then footprint mean) and that probability |
+| Google Open Buildings 2.5D building presence | 2023 | 4 m | Maximum presence confidence (annual maximum, then footprint maximum) |
+
+### 2.2. Detect embedding outliers
+
+Footprints whose embeddings differ markedly from the rest of the city are likely to be something other than a building (e.g., vegetation, bare ground, or water). We standardize the 64 embedding bands and fit an Isolation Forest (**300** estimators, contamination rate of **0.05**), which labels the most anomalous 5% of footprints in each city as candidate outliers. These candidates are then narrowed by the conditions in 2.3.
+
+### 2.3. Drop false positives
+
+A footprint is removed when either of two conditions holds:
+
+- **Embedding evidence:** the footprint is an embedding outlier, its top Dynamic World class is not built (or is built with a probability below **0.6**), and its geometry confidence is not high.
+- **Presence evidence:** its maximum Google 2.5D presence confidence is **≤ 0.1**, and its footprint date is before **2024**. Google 2.5D ends in 2023, so it cannot confirm buildings mapped afterward. Footprints with no date or no Google 2.5D coverage are not tested.
+
+Two safeguards override both conditions. A footprint is always kept if:
+
+- it comes from Overture and its footprint date is **2023 or later**, or
+- its top Dynamic World class is built with a probability of at least **0.6**.
+
+### 2.4. Compute neighbor statistics
+
+For each footprint, we find all other footprints within **50 m** (edge-to-edge) and record their number, the mean, minimum, and maximum of their areas, and the mean, minimum, and maximum of their distances. These support the next step: reviewing urban areas.
+
+### Outputs
+
+The cleaned footprints are written to `<data-root>/<city>/outputs/best_available_footprints_cleaned.gpkg`, with all step 1 attributes plus the Earth Engine values, outlier scores, and neighbor statistics. Intermediate results are kept in `<data-root>/<city>/sources/`:
+
+- `gee/`: footprints with Earth Engine values (`.gpkg` and `.csv`)
+- `gee/outlier_results/`: footprints with Isolation Forest results and t-SNE diagnostic plots
+- `cleaning/`: footprints remaining after false positives are dropped
