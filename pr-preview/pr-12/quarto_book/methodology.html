@@ -281,7 +281,7 @@ ul.task-list li input[type="checkbox"] {
 </ol>
 <section id="resolve-overlapping-footprints" class="level4">
 <h4 class="anchored" data-anchor-id="resolve-overlapping-footprints">Resolve overlapping footprints</h4>
-<p>The two sources are pooled, and conflicting footprints are resolved so each building is represented once.</p>
+<p>We pool the two sources and resolve conflicting footprints so each building is represented once.</p>
 <ul>
 <li><strong>Conflict rule:</strong> two footprints conflict when their intersection is at least <strong>0.01 m²</strong> <em>and</em> covers at least <strong>20%</strong> of the smaller footprint. Smaller overlaps are treated as boundary slivers, and both footprints are kept.</li>
 <li><strong>Ranking:</strong> candidates are ranked by source priority (OpenStreetMap &gt; Overture non-OSM &gt; 3D-GloBFP), then by footprint date (most recent first), then by ID.
