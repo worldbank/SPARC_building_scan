@@ -35,7 +35,7 @@ We sample three gridded height products to fill heights where no vector height i
 
 The full workflow has four distinct steps: data integration, data cleaning, flagging urban areas for review, and height attribution. Preliminary heights are attached during data integration and refined in the height attribution step.
 
-## Data Integration
+## 1) Data Integration
 
 The integration step (`src/1_data_integration`) combines Overture Maps Buildings and 3D-GloBFP into a single "best-available" footprint layer for a city, with one geometry per building, a best-available height, and attributes describing each footprint's source, confidence, and need for review. `run_workflow.py` runs the scripts below in order; each step can also be run on its own.
 
@@ -46,16 +46,16 @@ The integration step (`src/1_data_integration`) combines Overture Maps Buildings
 | 3 | `build_integrated_footprints.py` | Clean, merge, deduplicate, and attribute footprints |
 | 4 | `acquire_height_sources.py`, `enrich_raster_heights.py` | Attach raster heights and finalize the best height |
 
-### 1. Prepare inputs
+### 1.1. Prepare inputs
 
 The user supplies a city name and an area of interest (AOI) polygon. The AOI is reprojected to a local UTM zone, which is used for all area and overlap calculations.
 
-### 2. Download footprint sources
+### 1.2. Download footprint sources
 
 - **Overture:** buildings within the AOI's bounding box are downloaded as GeoParquet using the `overturemaps` CLI.
 - **3D-GloBFP:** the tile catalog is read from Figshare, every tile intersecting the AOI bounding box is downloaded, verified against its MD5 checksum, and extracted.
 
-### 3. Clean and harmonize
+### 1.3. Clean and harmonize
 
 Each source is cleaned independently:
 
@@ -76,7 +76,7 @@ We pool the two sources and resolve conflicting footprints so each building is r
 
 In practice, Overture geometry is kept wherever it exists, and 3D-GloBFP adds buildings that Overture is missing. Every suppressed footprint is recorded in a lineage table alongside the footprint that replaced it.
 
-### 4. Attribute the integrated footprints
+### 1.4. Attribute the integrated footprints
 
 **3D-GloBFP support.** A footprint is *supported* when a 3D-GloBFP footprint overlaps it by at least 1 m² and 35% of the smaller footprint. This is an independent check that the building exists and does not affect which geometry is selected.
 
@@ -120,3 +120,22 @@ Outputs are written to `<data-root>/<city>/outputs/`:
 - `summary.json`: input and output counts, source breakdown, and parameters used
 - `height_enrichment_metadata.json`: raster sources, bands, thresholds, and height priority order
 - `overview.png`: maps of the selected geometry source and best vector height
+
+## 2) Data Cleaning 
+
+1. Remove footprints smaller than 16m². 
+2. Identify potential false positives by attributing three 10m raster datasets: 
+    - Alpha Earth Embeddings (mean values from 64 bands). 
+    - Dynamic World Land Cover (mean value from top class). 
+    - Google 2.5D building presence confidence (max. value). 
+
+### Key thresholds
+
+- Start with all footprints of at least 4m². 
+- An outlier label is assigned with embeddings using an Isolation Forest algorithm (contamination rate of 0.05 and 300 estimators). 
+- Building presence confidence is converted to categories: low < 0.1, medium < 0.5, high ≥ 0.5, and no data. 
+- Two conditions flag a footprint for removal: 
+  - Embedding evidence: Footprint is an embedding outlier, dynamic world is non-built (or built with probability below 0.6), and geometry confidence is not high. 
+  - Presence evidence: Maximum building presence confidence is low (< 0.1). Only applies to footprints predating 2024, since the dataset ends in 2023. 
+
+A footprint with a recent Overture source year (2023 or later) is safeguarded from the removal flags. 
