@@ -97,3 +97,12 @@ src/*/_version.py
 /.quarto/
 /docs/
 **/*.quarto_ipynb
+
+# Local environments, test caches and data (added with src/9_segments)
+.venv/
+venv/
+.pytest_cache/
+*.gpkg
+*.parquet
+*.tif
+*.tiff
