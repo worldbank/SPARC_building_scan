@@ -15,3 +15,4 @@ overturemaps[geopandas]>=1.0.0
 jupyter>=1.0.0
 ipykernel>=6.29.0
 jupytext>=1.16.0
+pytest>=8.0
