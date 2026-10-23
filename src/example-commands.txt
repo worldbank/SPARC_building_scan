@@ -1,0 +1,22 @@
+uv venv --python 3.12
+uv pip install -r requirements.txt
+uv pip install -r requirements2.txt
+
+source .venv/bin/activate
+
+python 1_data_integration/run_workflow.py \
+  --city-name "Malakal" \
+  --aoi ~/Documents/sparc/malakal/Malakal_AOI_2.gpkg \
+  --data-root ~/bafw-data \
+  --skip-gba-height
+
+python 2_data_cleaning/run_workflow.py \
+  --city "malakal" \
+  --data-root ~/bafw-data \
+  --ee-project sparc-512301
+
+python scripts/run_workflow.py \
+  --city "malakal" \
+  --data-root ~/bafw-data \
+  --segments /Users/andreschamorro/Documents/sparc/malakal/segments_v2.gpkg \
+  --segments-layer segments

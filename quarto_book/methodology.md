@@ -169,3 +169,58 @@ The cleaned footprints are written to `<data-root>/<city>/outputs/best_available
 - `gee/`: footprints with Earth Engine values (`.gpkg` and `.csv`)
 - `gee/outlier_results/`: footprints with Isolation Forest results and t-SNE diagnostic plots
 - `cleaning/`: footprints remaining after false positives are dropped
+
+## 3) Flag Areas for Review
+
+The review step (`src/3_outdated_segments`) identifies neighborhood segments where the building footprint layer is likely out of date — where satellite evidence shows meaningfully more settled area today than the footprints we currently have account for. `run_workflow.py` runs the scripts below in order.
+
+| Stage | Script | Purpose |
+|---|---|---|
+| 0 | `0_download_wsf.py` | Stream and clip the WSF Tracker raster for the AOI |
+| 1 | `1_sample_building_wsf_year.py` | Establish each segment's baseline from its own buildings |
+| 2 | `2_compute_settled_change.py` | Measure settled-area growth since each segment's baseline |
+| 3 | `3_flag_outdated_segments.py` | Flag segments whose footprints are likely outdated |
+
+### 3.1. Stream the WSF Tracker raster
+
+We use the World Settlement Footprint (WSF) Tracker, a global biannual record of built-up land cover since 2016, streamed directly from its public Zarr archive and clipped to the AOI. Each pixel's value is the earliest epoch at which it was detected as built-up: **0** means never detected; **1–20** index the half-year epochs from 2016-07-01 onward, six months apart. The clipped raster is reprojected to the analysis CRS so pixel counts translate directly to area.
+
+[World Settlement Footprint Tracker. Streamed from `source.coop/mindearth/wsf`.]{.small .text-muted}
+
+### 3.2. Establish each segment's baseline
+
+This step takes reporting segments as an external input (e.g., the CIESIN City Segments Layer) rather than the reporting units from step 1 — segments are not used in steps 1–2.
+
+For every footprint from step 2 (cleaned buildings), we sample the WSF epoch at its interior point. Within each segment, the baseline is the **lower quartile** of WSF epoch among its own buildings — the point below which the oldest quarter of the segment's *currently mapped* building stock sits. This is a per-segment, not city-wide, reference point: a segment's effective footprint-coverage horizon is a property of that segment, not of the city as a whole.
+
+*Why lower quartile, and why epoch 1 dominates in practice:* epoch 1 is left-censored — it covers everything built before monitoring began in mid-2016, regardless of whether that was 1990 or 2015. In the cities tested so far, every segment's buildings include enough pre-2016 development that the lower quartile lands on epoch 1; the baseline would only move later for a segment where more than 75% of its currently-mapped buildings postdate 2016. This is treated as a genuine finding, not an error — a segment where buildings cluster this old is legitimately an old segment, and the growth comparison in 3.3 still varies meaningfully by segment even when the baseline epoch does not.
+
+Segments are also given a `building_count`, used as a coverage gate in 3.4.
+
+### 3.3. Measure settled-area change
+
+For each segment we compare two areas from the same raster:
+
+- **Current settled area:** every pixel ever detected as built-up (epoch 1–20).
+- **Baseline settled area:** pixels detected as built-up at or before *that segment's own* baseline epoch from 3.2.
+
+Segments are rasterized onto the WSF grid once; pixel counts are then grouped by segment and compared against each segment's own threshold in a single pass, rather than clipping the raster per segment.
+
+### 3.4. Flag outdated segments
+
+A segment is flagged when all three hold:
+
+| Condition | Threshold |
+|---|---|
+| Share of today's settled area that postdates baseline | **> 15%** *(placeholder; 10–25% under consideration)* |
+| Absolute settled-area growth since baseline | **> 10,000 m²** |
+| Non-trivial existing building footprint coverage | **≥ 10 buildings** *(placeholder)* |
+
+The percentage and coverage thresholds are provisional and will be calibrated; the absolute-area threshold reflects the current specification.
+
+### Outputs
+
+Outputs are written to `<data-root>/<city>/outputs/outdated_segments.gpkg`: segment geometries with `baseline_epoch`, `baseline_year`, `building_count`, `current_settled_m2`, `baseline_settled_m2`, `change_pct`, `change_abs_m2`, and the `outdated` flag. Intermediate results are kept in `<data-root>/<city>/sources/`:
+
+- `wsf/`: the clipped, reprojected WSF Tracker raster
+- `segments/`: segments with baseline, then with settled-area statistics, at each stage
