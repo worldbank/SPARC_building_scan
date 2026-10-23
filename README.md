@@ -1,19 +1,19 @@
 # SPARC Building Scan
 
-SPARC Building Scan is a geospatial workflow designed to generate high-quality, analysis-ready building footprints for urban areas.
+SPARC Building Scan is a geospatial workflow that generates high-quality, analysis-ready building footprints for urban areas.
 
 ## Repository Structure
 
-- `src/`: Python source code to run building scan.
+- `src/`: Python source code to run the building scan.
 - `quarto_book/`: Markdown and Quarto source files for the documentation pages.
 - `notebooks/`: Exploratory notebooks for analysis and experimentation.
-- `.github/workflows/`: CI workflows to build preview of pages and publish.
+- `.github/workflows/`: CI workflows to build a preview of pages and publish.
 
 ## Running Building Scan
 
 ### Setup Python environment
 
-This project requires **Python >=3.9**. It is recommended to use a virtual environment to manage dependencies. You can create and activate a virtual environment using the following commands:
+This project requires **Python >=3.9**. Use a virtual environment to manage dependencies. You can create and activate a virtual environment using the following commands:
 
 ```bash
 python -m venv .venv # virtual env will use the default Python that runs this command; check with `python --version`
@@ -54,20 +54,20 @@ pip install uv
 Then create the environment and install dependencies:
 
    ```bash
-   uv venv --python 3.12
    cd src
+   uv venv --python 3.12
    uv pip install -r requirements.txt
    ```
 
-> **Note:** If a conda environment is active (e.g. `(base)` in your prompt), run `conda deactivate` before using venv or uv. Otherwise the conda environment may be used instead of `.venv`.
+> **Note:** If a conda environment is active (e.g., `(base)` in your prompt), run `conda deactivate` before using venv or uv. Otherwise, the conda environment may be used instead of `.venv`.
 
 ### Running the workflow
 
-The workflow is run as a series of 4 python scripts, which themselves are composed of smaller scripts that handle specific tasks (download, data prep, etc.). The only arguments that need to be passed are `--city-name`, `--country`, `--aoi` (path for the city extent file, typically a GeoJSON), `--data-root` (working directory where inputs and outputs are stored).
+The workflow is run as a series of 4 Python scripts, which themselves are composed of smaller scripts that handle specific tasks (download, data prep, etc.). The only arguments that need to be passed are `--city-name`, `--aoi` (path to the city extent file, typically a GeoJSON), and `--data-root` (working directory where inputs and outputs are stored).
 
 Activate the environment as above and run the scripts as follows:
 
-If using windows:
+If using Windows:
 ```bash
 cd src
 .venv\Scripts\activate
@@ -95,7 +95,7 @@ python 1_data_integration/run_workflow.py \
 
 ### Contributing to documentation pages
 
-The documentation is built with [Quarto](https://quarto.org/docs/get-started/). Installing it is optional, but helpful to preview changes locally. You can install it on WB machines via the software center. For other systems, follow the installation instructions on the Quarto website.
+The documentation is built with [Quarto](https://quarto.org/docs/get-started/). Installation is optional but helpful for previewing changes locally. You can install it on WB machines via the software center. For other systems, follow the installation instructions on the Quarto website.
 
 1. Clone the repository:
 
@@ -116,7 +116,7 @@ The documentation is built with [Quarto](https://quarto.org/docs/get-started/). 
    ```bash
    quarto preview
    ```
-   This opens a live preview in your browser that updates as you edit. To build the full site instead, run `quarto render`, which writes the output to `docs/`. This folder is not tracked by Git.
+   This opens a live preview in your browser that updates as you edit. To build the full site instead, run `quarto render`, which writes the output to `docs/`. Git does not track this folder.
 
 5. Commit your changes:
 
