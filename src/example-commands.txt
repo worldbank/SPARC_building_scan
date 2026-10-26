@@ -1,6 +1,5 @@
 uv venv --python 3.12
 uv pip install -r requirements.txt
-uv pip install -r requirements2.txt
 
 source .venv/bin/activate
 
@@ -15,7 +14,7 @@ python 2_data_cleaning/run_workflow.py \
   --data-root ~/bafw-data \
   --ee-project sparc-512301
 
-python scripts/run_workflow.py \
+python 3_outdated_segments/run_workflow.py \
   --city "malakal" \
   --data-root ~/bafw-data \
   --segments /Users/andreschamorro/Documents/sparc/malakal/segments_v2.gpkg \

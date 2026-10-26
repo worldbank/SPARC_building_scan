@@ -13,6 +13,7 @@ one is assigned.
 from __future__ import annotations
 
 import argparse
+import sys
 from datetime import date
 from pathlib import Path
 
@@ -23,7 +24,8 @@ import rasterio
 import shapely
 from dateutil.relativedelta import relativedelta
 
-from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root, skip_existing
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root, skip_existing  # noqa: E402
 
 
 EPOCH_START = date(2016, 1, 1)  # epoch 1 lands on 2016-07-01 via +6 months

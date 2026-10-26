@@ -6,6 +6,7 @@ diagnostic plots for one prepared city's GEE-enriched building footprints.
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
 
 import geopandas as gpd
@@ -16,7 +17,8 @@ from sklearn.ensemble import IsolationForest
 from sklearn.manifold import TSNE
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
-from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root, skip_existing
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root, skip_existing  # noqa: E402
 
 
 ID_FIELD = "integrated_id"

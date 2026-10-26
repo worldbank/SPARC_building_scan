@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import sys
 from pathlib import Path
 
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/mpl_best_available_footprints")
@@ -17,8 +18,9 @@ import pandas as pd
 import shapely
 from matplotlib import pyplot as plt
 
-from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root, skip_existing
-from footprint_overlap_resolution import resolve_overlaps_by_recency
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root, skip_existing  # noqa: E402
+from footprint_overlap_resolution import resolve_overlaps_by_recency  # noqa: E402
 
 
 matplotlib.use("Agg")

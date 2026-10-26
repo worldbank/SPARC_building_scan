@@ -12,6 +12,8 @@ pixel counts are grouped by segment, comparing each pixel's epoch against
 from __future__ import annotations
 
 import argparse
+import sys
+from pathlib import Path
 
 import geopandas as gpd
 import numpy as np
@@ -19,7 +21,8 @@ import pandas as pd
 import rasterio
 from rasterio.features import rasterize
 
-from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root, skip_existing
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root, skip_existing  # noqa: E402
 
 
 NO_SEGMENT = -1  # sentinel for "outside any segment" -- segment IDs are always >= 0

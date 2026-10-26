@@ -8,12 +8,14 @@ import hashlib
 import json
 import re
 import shutil
+import sys
 import zipfile
 from pathlib import Path
 
 import requests
 
-from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root  # noqa: E402
 
 
 FIGSHARE_ARTICLE_IDS = [
