@@ -123,7 +123,7 @@ Outputs are written to `<data-root>/<city>/outputs/`:
 
 ## 2) Data Cleaning
 
-The cleaning step (`src/2_data_cleaning`) removes likely false positives from the integrated footprints using satellite-derived evidence of whether a building is present. It then adds neighborhood statistics for later review. `run_workflow.py` runs the scripts below in order; each step can also be run on its own.
+The cleaning step (`src/2_data_cleaning`) removes likely false positives from the integrated footprints using satellite-derived evidence of whether a building is present. It then adds neighborhood statistics for later review. `run_workflow.py` runs the scripts below in order.
 
 | Stage | Script | Purpose |
 |---|---|---|
@@ -172,7 +172,7 @@ The cleaned footprints are written to `<data-root>/<city>/outputs/best_available
 
 ## 3) Flag Areas for Review
 
-The review step (`src/3_outdated_segments`) identifies neighborhood segments where the building footprint layer is likely out of date — where satellite evidence shows meaningfully more settled area today than the footprints we currently have account for. `run_workflow.py` runs the scripts below in order.
+The review step (`src/3_outdated_segments`) identifies urban areas (grouped blocks) where the building footprint layer is likely out of date — where satellite evidence shows meaningfully more settled area today than the footprints we currently have account for. `run_workflow.py` runs the scripts below in order.
 
 | Stage | Script | Purpose |
 |---|---|---|
@@ -183,32 +183,28 @@ The review step (`src/3_outdated_segments`) identifies neighborhood segments whe
 
 ### 3.1. Stream the WSF Tracker raster
 
-We use the World Settlement Footprint (WSF) Tracker, a global biannual record of built-up land cover since 2016, streamed directly from its public Zarr archive and clipped to the AOI. Each pixel's value is the earliest epoch at which it was detected as built-up: **0** means never detected; **1–20** index the half-year epochs from 2016-07-01 onward, six months apart. The clipped raster is reprojected to the analysis CRS so pixel counts translate directly to area.
+We use the World Settlement Footprint (WSF) Tracker, a global biannual record of built-up land cover since 2016. Each pixel's value is the earliest epoch at which it was detected as built-up: **0** means never detected; **1–20** index the half-year epochs from 2016-07-01 onward, six months apart. The clipped raster is reprojected to the analysis CRS so pixel counts translate directly to area.
 
 [World Settlement Footprint Tracker. Streamed from `source.coop/mindearth/wsf`.]{.small .text-muted}
 
 ### 3.2. Establish each segment's baseline
 
-This step takes reporting segments as an external input (e.g., the CIESIN City Segments Layer) rather than the reporting units from step 1 — segments are not used in steps 1–2.
+We define urban areas (group blocks) following research from CIESIN (Segments V2). For every footprint from step 2, we sample the WSF epoch at its interior point. Within each segment, the baseline is the **lower quartile** of the WSF epoch among its own buildings — the point below which the oldest quarter of the segment's *currently mapped* building stock sits. This is a per-segment reference point.
 
-For every footprint from step 2 (cleaned buildings), we sample the WSF epoch at its interior point. Within each segment, the baseline is the **lower quartile** of WSF epoch among its own buildings — the point below which the oldest quarter of the segment's *currently mapped* building stock sits. This is a per-segment, not city-wide, reference point: a segment's effective footprint-coverage horizon is a property of that segment, not of the city as a whole.
-
-*Why lower quartile, and why epoch 1 dominates in practice:* epoch 1 is left-censored — it covers everything built before monitoring began in mid-2016, regardless of whether that was 1990 or 2015. In the cities tested so far, every segment's buildings include enough pre-2016 development that the lower quartile lands on epoch 1; the baseline would only move later for a segment where more than 75% of its currently-mapped buildings postdate 2016. This is treated as a genuine finding, not an error — a segment where buildings cluster this old is legitimately an old segment, and the growth comparison in 3.3 still varies meaningfully by segment even when the baseline epoch does not.
-
-Segments are also given a `building_count`, used as a coverage gate in 3.4.
+*Why lower quartile, and why epoch 1 dominates in practice:* epoch 1 covers everything built before monitoring began in mid-2016, regardless of whether that was 1990 or 2015. In the cities tested so far, every segment's buildings include enough pre-2016 development that the lower quartile lands on epoch 1. The growth comparison in 3.3 still varies meaningfully by segment even when the baseline epoch does not. Segments are also given a `building_count`, used as a coverage gate in 3.4.
 
 ### 3.3. Measure settled-area change
 
-For each segment we compare two areas from the same raster:
+For each urban area, we compare two areas from the same raster:
 
 - **Current settled area:** every pixel ever detected as built-up (epoch 1–20).
-- **Baseline settled area:** pixels detected as built-up at or before *that segment's own* baseline epoch from 3.2.
+- **Baseline settled area:** pixels detected as built-up at or before *that area's own* baseline epoch from 3.2.
 
-Segments are rasterized onto the WSF grid once; pixel counts are then grouped by segment and compared against each segment's own threshold in a single pass, rather than clipping the raster per segment.
+We rasterize urban areas onto the same raster grid as the WSF data, then pixel counts are summed by group and compared against each area’s own baseline in a single pass.
 
 ### 3.4. Flag outdated segments
 
-A segment is flagged when all three hold:
+An area is flagged when all three hold:
 
 | Condition | Threshold |
 |---|---|

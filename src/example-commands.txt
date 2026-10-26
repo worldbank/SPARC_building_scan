@@ -19,4 +19,5 @@ python scripts/run_workflow.py \
   --city "malakal" \
   --data-root ~/bafw-data \
   --segments /Users/andreschamorro/Documents/sparc/malakal/segments_v2.gpkg \
-  --segments-layer segments
+  --segments-layer segments \
+  --segments-id-field newid
