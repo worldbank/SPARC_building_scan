@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Methodology – SPARC Building Scan</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-12a87ce4a3db8ae78ad34dc8821cdee3.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">SPARC Building Scan</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Building Scan</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../quarto_book/methodology.html" aria-current="page"> 
+<span class="menu-text">Methodology</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../quarto_book/validation.html"> 
+<span class="menu-text">Validation</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-sources" id="toc-data-sources" class="nav-link active" data-scroll-target="#data-sources">Data Sources</a>
+  <ul class="collapse">
+  <li><a href="#footprint-sources" id="toc-footprint-sources" class="nav-link" data-scroll-target="#footprint-sources">Footprint sources</a></li>
+  <li><a href="#raster-height-sources" id="toc-raster-height-sources" class="nav-link" data-scroll-target="#raster-height-sources">Raster height sources</a></li>
+  </ul></li>
+  <li><a href="#data-integration" id="toc-data-integration" class="nav-link" data-scroll-target="#data-integration">1) Data Integration</a>
+  <ul class="collapse">
+  <li><a href="#prepare-inputs" id="toc-prepare-inputs" class="nav-link" data-scroll-target="#prepare-inputs">1.1. Prepare inputs</a></li>
+  <li><a href="#download-footprint-sources" id="toc-download-footprint-sources" class="nav-link" data-scroll-target="#download-footprint-sources">1.2. Download footprint sources</a></li>
+  <li><a href="#clean-and-harmonize" id="toc-clean-and-harmonize" class="nav-link" data-scroll-target="#clean-and-harmonize">1.3. Clean and harmonize</a></li>
+  <li><a href="#attribute-the-integrated-footprints" id="toc-attribute-the-integrated-footprints" class="nav-link" data-scroll-target="#attribute-the-integrated-footprints">1.4. Attribute the integrated footprints</a></li>
+  <li><a href="#outputs" id="toc-outputs" class="nav-link" data-scroll-target="#outputs">Outputs</a></li>
+  </ul></li>
+  <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning">2) Data Cleaning</a>
+  <ul class="collapse">
+  <li><a href="#attach-remote-sensing-evidence" id="toc-attach-remote-sensing-evidence" class="nav-link" data-scroll-target="#attach-remote-sensing-evidence">2.1. Attach remote-sensing evidence</a></li>
+  <li><a href="#detect-embedding-outliers" id="toc-detect-embedding-outliers" class="nav-link" data-scroll-target="#detect-embedding-outliers">2.2. Detect embedding outliers</a></li>
+  <li><a href="#drop-false-positives" id="toc-drop-false-positives" class="nav-link" data-scroll-target="#drop-false-positives">2.3. Drop false positives</a></li>
+  <li><a href="#compute-neighbor-statistics" id="toc-compute-neighbor-statistics" class="nav-link" data-scroll-target="#compute-neighbor-statistics">2.4. Compute neighbor statistics</a></li>
+  <li><a href="#outputs-1" id="toc-outputs-1" class="nav-link" data-scroll-target="#outputs-1">Outputs</a></li>
+  </ul></li>
+  <li><a href="#flag-areas-for-review" id="toc-flag-areas-for-review" class="nav-link" data-scroll-target="#flag-areas-for-review">3) Flag Areas for Review</a>
+  <ul class="collapse">
+  <li><a href="#stream-the-wsf-tracker-raster" id="toc-stream-the-wsf-tracker-raster" class="nav-link" data-scroll-target="#stream-the-wsf-tracker-raster">3.1. Stream the WSF Tracker raster</a></li>
+  <li><a href="#establish-each-segments-baseline" id="toc-establish-each-segments-baseline" class="nav-link" data-scroll-target="#establish-each-segments-baseline">3.2. Establish each segment’s baseline</a></li>
+  <li><a href="#measure-settled-area-change" id="toc-measure-settled-area-change" class="nav-link" data-scroll-target="#measure-settled-area-change">3.3. Measure settled-area change</a></li>
+  <li><a href="#flag-outdated-segments" id="toc-flag-outdated-segments" class="nav-link" data-scroll-target="#flag-outdated-segments">3.4. Flag outdated segments</a></li>
+  <li><a href="#outputs-2" id="toc-outputs-2" class="nav-link" data-scroll-target="#outputs-2">Outputs</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Methodology</h1>
+<p class="subtitle lead">Open-Source Layers</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This page documents the workflow for option 1.</p>
+<section id="data-sources" class="level2">
+<h2 class="anchored" data-anchor-id="data-sources">Data Sources</h2>
+<p>The Building Scan workflow leverages various open-source geospatial layers to generate building footprints and heights.</p>
+<section id="footprint-sources" class="level3">
+<h3 class="anchored" data-anchor-id="footprint-sources">Footprint sources</h3>
+<section id="overture-maps-buildings" class="level4">
+<h4 class="anchored" data-anchor-id="overture-maps-buildings">Overture Maps Buildings</h4>
+<p>Overture Maps Buildings is a global vector building layer published by the Overture Maps Foundation. Overture conflates several major open and openly licensed footprint sources — OpenStreetMap (OSM), Google Open Buildings, Microsoft Global ML Building Footprints, Esri, and Meta — into a single layer of roughly 2.3 billion footprints, prioritizing community-contributed OSM geometry over machine-learning-derived sources during conflation.</p>
+<p><span class="small text-muted"><a href="https://docs.overturemaps.org/">Overture Maps Foundation</a>. (2024).</span></p>
+</section>
+<section id="d-globfp" class="level4">
+<h4 class="anchored" data-anchor-id="d-globfp">3D-GloBFP</h4>
+<p>3D-GloBFP is the first global building-footprint dataset to include a modeled height for every individual building. Its footprint geometries are drawn primarily from Microsoft’s Global ML Building Footprints (~1.3 billion structures, ca. 2020) and augmented in East Asia with ~280 million building footprints of Shi et al.&nbsp;(2024), produced with their Comprehensive Large-Scale Mapping (CLSM) framework, to address known coverage gaps in the region.</p>
+<p><span class="small text-muted">Che, Y., Li, X., Liu, X., Wang, Y., Liao, W., Zheng, X., et al.&nbsp;<a href="https://doi.org/10.5194/essd-16-5357-2024">(2024)</a>. 3D-GloBFP: The first global three-dimensional building footprint dataset. <em>Earth System Science Data</em>, 16, 5357–5374.</span></p>
+</section>
+</section>
+<section id="raster-height-sources" class="level3">
+<h3 class="anchored" data-anchor-id="raster-height-sources">Raster height sources</h3>
+<p>We sample three gridded height products to fill heights where no vector height is available. They describe the raster cell containing a building, not the building itself, so they are treated as low-confidence estimates.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Source</th>
+<th>Vintage</th>
+<th>Bands used</th>
+<th>Access</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Google Open Buildings 2.5D Temporal</td>
+<td>2023-06-30</td>
+<td>Band 2 height (m), band 3 building presence</td>
+<td>Cloud-optimized GeoTIFFs (COGs), streamed</td>
+</tr>
+<tr class="even">
+<td>GBA.Height (Global Building Atlas)</td>
+<td>—</td>
+<td>Band 1 height (m), 3 m resolution</td>
+<td>GeoTIFF tiles extracted from the official mediaTUM ZIP archives</td>
+</tr>
+<tr class="odd">
+<td>TEMPO</td>
+<td>2023 Q4</td>
+<td>Band 1 building density, band 2 normalized height (× 100 m)</td>
+<td>COGs, streamed by default or optionally downloaded</td>
+</tr>
+</tbody>
+</table>
+<p>The full workflow has four distinct steps: data integration, data cleaning, flagging urban areas for review, and height attribution. Preliminary heights are attached during data integration and refined in the height attribution step.</p>
+</section>
+</section>
+<section id="data-integration" class="level2">
+<h2 class="anchored" data-anchor-id="data-integration">1) Data Integration</h2>
+<p>The integration step (<code>src/1_data_integration</code>) combines Overture Maps Buildings and 3D-GloBFP into a single “best-available” footprint layer for a city, with one geometry per building, a best-available height, and attributes describing each footprint’s source, confidence, and need for review. <code>run_workflow.py</code> runs the scripts below in order.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Stage</th>
+<th>Script</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><code>prepare_city.py</code></td>
+<td>Set up the city workspace</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><code>download_overture.py</code>, <code>download_3d_globfp.py</code></td>
+<td>Download footprint sources for the AOI</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><code>build_integrated_footprints.py</code></td>
+<td>Clean, merge, deduplicate, and attribute footprints</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><code>acquire_height_sources.py</code>, <code>enrich_raster_heights.py</code></td>
+<td>Attach raster heights and finalize the best height</td>
+</tr>
+</tbody>
+</table>
+<section id="prepare-inputs" class="level3">
+<h3 class="anchored" data-anchor-id="prepare-inputs">1.1. Prepare inputs</h3>
+<p>The user supplies a city name and an area of interest (AOI) polygon. The AOI is reprojected to a local UTM zone, which is used for all area and overlap calculations.</p>
+</section>
+<section id="download-footprint-sources" class="level3">
+<h3 class="anchored" data-anchor-id="download-footprint-sources">1.2. Download footprint sources</h3>
+<ul>
+<li><strong>Overture:</strong> buildings within the AOI’s bounding box are downloaded as GeoParquet using the <code>overturemaps</code> CLI.</li>
+<li><strong>3D-GloBFP:</strong> the tile catalog is read from Figshare, every tile intersecting the AOI bounding box is downloaded, verified against its MD5 checksum, and extracted.</li>
+</ul>
+</section>
+<section id="clean-and-harmonize" class="level3">
+<h3 class="anchored" data-anchor-id="clean-and-harmonize">1.3. Clean and harmonize</h3>
+<p>Each source is cleaned independently:</p>
+<ol type="1">
+<li>Reproject to the analysis CRS.</li>
+<li>Drop null or empty geometries, repair invalid ones, and keep only polygons.</li>
+<li>Drop footprints smaller than <strong>4 m²</strong>.</li>
+<li>Keep footprints whose interior point (point-on-surface) falls inside the AOI. Footprints are never clipped, so buildings straddling the AOI boundary stay whole.</li>
+</ol>
+<section id="resolve-overlapping-footprints" class="level4">
+<h4 class="anchored" data-anchor-id="resolve-overlapping-footprints">Resolve overlapping footprints</h4>
+<p>We pool the two sources and resolve conflicting footprints so each building is represented once.</p>
+<ul>
+<li><strong>Conflict rule:</strong> two footprints conflict when their intersection is at least <strong>0.01 m²</strong> <em>and</em> covers at least <strong>20%</strong> of the smaller footprint. Smaller overlaps are treated as boundary slivers, and both footprints are kept.</li>
+<li><strong>Ranking:</strong> candidates are ranked by source priority (OpenStreetMap &gt; Overture non-OSM &gt; 3D-GloBFP), then by footprint date (most recent first), then by ID.
+<ul>
+<li><em>Why source before date:</em> footprint dates are not comparable across sources. The 3D-GloBFP date is the dataset’s 2020 vintage, not when each building was observed, and Overture’s <code>update_time</code> records when a record was last edited or ingested, not when the building was captured. Within a source, dates are more consistent and break ties. OSM ranks above other Overture sources because human-digitized geometry is generally more accurate than machine-learning-derived footprints.</li>
+<li><em>Trade-off:</em> an outdated footprint from a higher-priority source (e.g., a demolished building still in OSM) is kept over a newer, lower-priority one. We leave such cases for later cleaning and review steps.</li>
+</ul></li>
+<li><strong>Selection:</strong> footprints are visited in rank order. A footprint is kept unless it conflicts with one already kept, in which case it is suppressed.</li>
+</ul>
+<p>In practice, Overture geometry is kept wherever it exists, and 3D-GloBFP adds buildings that Overture is missing. Every suppressed footprint is recorded in a lineage table alongside the footprint that replaced it.</p>
+</section>
+</section>
+<section id="attribute-the-integrated-footprints" class="level3">
+<h3 class="anchored" data-anchor-id="attribute-the-integrated-footprints">1.4. Attribute the integrated footprints</h3>
+<p><strong>3D-GloBFP support.</strong> A footprint is <em>supported</em> when a 3D-GloBFP footprint overlaps it by at least 1 m² and 35% of the smaller footprint. This is an independent check that the building exists and does not affect which geometry is selected.</p>
+<p><strong>Preliminary height.</strong> Each footprint takes the first valid value (0.5–100 m.) from the following, in priority order:</p>
+<ol type="1">
+<li>Native Overture height</li>
+<li>OSM floor count × 3 m (for 1–40 floors)</li>
+<li>3D-GloBFP modeled height, taken from the 3D-GloBFP footprint containing the building’s interior point (or from the footprint itself, if it came from 3D-GloBFP)</li>
+</ol>
+<p><strong>Geometry confidence.</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Confidence</th>
+<th>Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>High</td>
+<td>OSM footprint that is supported by 3D-GloBFP or has been edited more than once in OSM</td>
+</tr>
+<tr class="even">
+<td>Medium</td>
+<td>Any other OSM footprint; non-OSM Overture footprint supported by 3D-GloBFP; 3D-GloBFP footprint with a height</td>
+</tr>
+<tr class="odd">
+<td>Low</td>
+<td>All other footprints</td>
+</tr>
+</tbody>
+</table>
+<section id="raster-height-enrichment" class="level4">
+<h4 class="anchored" data-anchor-id="raster-height-enrichment">Raster height enrichment</h4>
+<p>The raster height sources are located for the AOI. We then sample each footprint at its interior point. Where several rasters cover a point, valid values are averaged. Raster heights are only accepted when they fall within 0.5–100 m. Additionally, building presence must be ≥ 0.5 (for Google), and building density is ≥ 0.001 (for TEMPO).</p>
+<p>The best height is then recomputed across all six sources, in order of priority:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Priority</th>
+<th>Source</th>
+<th>Height confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Native Overture height</td>
+<td>High</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>OSM floors × 3 m</td>
+<td>Medium</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>3D-GloBFP</td>
+<td>Medium</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Google 2.5D (2023)</td>
+<td>Low</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>GBA.Height</td>
+<td>Low</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>TEMPO (2023 Q4)</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Review flag.</strong> A footprint is flagged for review (<code>review_required</code>) when its geometry confidence is low, or when two or more height sources disagree by more than 5 m.</p>
+</section>
+</section>
+<section id="outputs" class="level3">
+<h3 class="anchored" data-anchor-id="outputs">Outputs</h3>
+<p>Outputs are written to <code>&lt;data-root&gt;/&lt;city&gt;/outputs/</code>:</p>
+<ul>
+<li><code>best_available_footprints.parquet</code> / <code>.gpkg</code>: the integrated footprints with source, height, confidence, and review attributes</li>
+<li><code>footprint_lineage.parquet</code> / <code>.csv</code>: each selected footprint and the footprints it replaced</li>
+<li><code>summary.json</code>: input and output counts, source breakdown, and parameters used</li>
+<li><code>height_enrichment_metadata.json</code>: raster sources, bands, thresholds, and height priority order</li>
+<li><code>overview.png</code>: maps of the selected geometry source and best vector height</li>
+</ul>
+</section>
+</section>
+<section id="data-cleaning" class="level2">
+<h2 class="anchored" data-anchor-id="data-cleaning">2) Data Cleaning</h2>
+<p>The cleaning step (<code>src/2_data_cleaning</code>) removes likely false positives from the integrated footprints using satellite-derived evidence of whether a building is present. It then adds neighborhood statistics for later review. <code>run_workflow.py</code> runs the scripts below in order.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Stage</th>
+<th>Script</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td><code>0_get_gee_data.py</code></td>
+<td>Attach Earth Engine land-cover, embedding, and building-presence values to each footprint</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td><code>1_detect_outliers.py</code></td>
+<td>Flag embedding outliers with an Isolation Forest</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td><code>2_drop_false_positives.py</code></td>
+<td>Drop footprints with evidence of being false positives</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td><code>3_finalize_buildings.py</code></td>
+<td>Compute neighbor statistics</td>
+</tr>
+</tbody>
+</table>
+<section id="attach-remote-sensing-evidence" class="level3">
+<h3 class="anchored" data-anchor-id="attach-remote-sensing-evidence">2.1. Attach remote-sensing evidence</h3>
+<p>We start from all integrated footprints (≥ 4 m², from step 1) and use Google Earth Engine to summarize three raster datasets over each footprint:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dataset</th>
+<th>Year</th>
+<th>Resolution</th>
+<th>Footprint value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AlphaEarth satellite embeddings</td>
+<td>2025</td>
+<td>10 m</td>
+<td>Mean of each of the 64 embedding bands</td>
+</tr>
+<tr class="even">
+<td>Dynamic World land cover</td>
+<td>2025</td>
+<td>10 m</td>
+<td>Class with the highest mean probability (annual mean, then footprint mean) and that probability</td>
+</tr>
+<tr class="odd">
+<td>Google Open Buildings 2.5D building presence</td>
+<td>2023</td>
+<td>4 m</td>
+<td>Maximum presence confidence (annual maximum, then footprint maximum)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="detect-embedding-outliers" class="level3">
+<h3 class="anchored" data-anchor-id="detect-embedding-outliers">2.2. Detect embedding outliers</h3>
+<p>Footprints whose embeddings differ markedly from the rest of the city are likely to be something other than a building (e.g., vegetation, bare ground, or water). We standardize the 64 embedding bands and fit an Isolation Forest (<strong>300</strong> estimators, contamination rate of <strong>0.05</strong>), which labels the most anomalous 5% of footprints in each city as candidate outliers. These candidates are then narrowed by the conditions in 2.3.</p>
+</section>
+<section id="drop-false-positives" class="level3">
+<h3 class="anchored" data-anchor-id="drop-false-positives">2.3. Drop false positives</h3>
+<p>A footprint is removed when either of two conditions holds:</p>
+<ul>
+<li><strong>Embedding evidence:</strong> the footprint is an embedding outlier, its top Dynamic World class is not built (or is built with a probability below <strong>0.6</strong>), and its geometry confidence is not high.</li>
+<li><strong>Presence evidence:</strong> its maximum Google 2.5D presence confidence is <strong>≤ 0.1</strong>, and its footprint date is before <strong>2024</strong>. Google 2.5D ends in 2023, so it cannot confirm buildings mapped afterward. Footprints with no date or no Google 2.5D coverage are not tested.</li>
+</ul>
+<p>Two safeguards override both conditions. A footprint is always kept if:</p>
+<ul>
+<li>it comes from Overture and its footprint date is <strong>2023 or later</strong>, or</li>
+<li>its top Dynamic World class is built with a probability of at least <strong>0.6</strong>.</li>
+</ul>
+</section>
+<section id="compute-neighbor-statistics" class="level3">
+<h3 class="anchored" data-anchor-id="compute-neighbor-statistics">2.4. Compute neighbor statistics</h3>
+<p>For each footprint, we find all other footprints within <strong>50 m</strong> (edge-to-edge) and record their number, the mean, minimum, and maximum of their areas, and the mean, minimum, and maximum of their distances. These support the next step: reviewing urban areas.</p>
+</section>
+<section id="outputs-1" class="level3">
+<h3 class="anchored" data-anchor-id="outputs-1">Outputs</h3>
+<p>The cleaned footprints are written to <code>&lt;data-root&gt;/&lt;city&gt;/outputs/best_available_footprints_cleaned.gpkg</code>, with all step 1 attributes plus the Earth Engine values, outlier scores, and neighbor statistics. Intermediate results are kept in <code>&lt;data-root&gt;/&lt;city&gt;/sources/</code>:</p>
+<ul>
+<li><code>gee/</code>: footprints with Earth Engine values (<code>.gpkg</code> and <code>.csv</code>)</li>
+<li><code>gee/outlier_results/</code>: footprints with Isolation Forest results and t-SNE diagnostic plots</li>
+<li><code>cleaning/</code>: footprints remaining after false positives are dropped</li>
+</ul>
+</section>
+</section>
+<section id="flag-areas-for-review" class="level2">
+<h2 class="anchored" data-anchor-id="flag-areas-for-review">3) Flag Areas for Review</h2>
+<p>The review step (<code>src/3_outdated_segments</code>) identifies urban areas (grouped blocks) where the building footprint layer is likely out of date — where satellite evidence shows meaningfully more settled area today than the footprints we currently have account for. <code>run_workflow.py</code> runs the scripts below in order.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Stage</th>
+<th>Script</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td><code>0_download_wsf.py</code></td>
+<td>Stream and clip the WSF Tracker raster for the AOI</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td><code>1_sample_building_wsf_year.py</code></td>
+<td>Establish each segment’s baseline from its own buildings</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td><code>2_compute_settled_change.py</code></td>
+<td>Measure settled-area growth since each segment’s baseline</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td><code>3_flag_outdated_segments.py</code></td>
+<td>Flag segments whose footprints are likely outdated</td>
+</tr>
+</tbody>
+</table>
+<section id="stream-the-wsf-tracker-raster" class="level3">
+<h3 class="anchored" data-anchor-id="stream-the-wsf-tracker-raster">3.1. Stream the WSF Tracker raster</h3>
+<p>We use the World Settlement Footprint (WSF) Tracker, a global biannual record of built-up land cover since 2016. Each pixel’s value is the earliest epoch at which it was detected as built-up: <strong>0</strong> means never detected; <strong>1–20</strong> index the half-year epochs from 2016-07-01 onward, six months apart. The clipped raster is reprojected to the analysis CRS so pixel counts translate directly to area.</p>
+<p><span class="small text-muted">World Settlement Footprint Tracker. Streamed from <code>source.coop/mindearth/wsf</code>.</span></p>
+</section>
+<section id="establish-each-segments-baseline" class="level3">
+<h3 class="anchored" data-anchor-id="establish-each-segments-baseline">3.2. Establish each segment’s baseline</h3>
+<p>We define urban areas (group blocks) following research from CIESIN (Segments V2). For every footprint from step 2, we sample the WSF epoch at its interior point. Within each segment, the baseline is the <strong>lower quartile</strong> of the WSF epoch among its own buildings — the point below which the oldest quarter of the segment’s <em>currently mapped</em> building stock sits. This is a per-segment reference point.</p>
+<p><em>Why lower quartile, and why epoch 1 dominates in practice:</em> epoch 1 covers everything built before monitoring began in mid-2016, regardless of whether that was 1990 or 2015. In the cities tested so far, every segment’s buildings include enough pre-2016 development that the lower quartile lands on epoch 1. The growth comparison in 3.3 still varies meaningfully by segment even when the baseline epoch does not. Segments are also given a <code>building_count</code>, used as a coverage gate in 3.4.</p>
+</section>
+<section id="measure-settled-area-change" class="level3">
+<h3 class="anchored" data-anchor-id="measure-settled-area-change">3.3. Measure settled-area change</h3>
+<p>For each urban area, we compare two areas from the same raster:</p>
+<ul>
+<li><strong>Current settled area:</strong> every pixel ever detected as built-up (epoch 1–20).</li>
+<li><strong>Baseline settled area:</strong> pixels detected as built-up at or before <em>that area’s own</em> baseline epoch from 3.2.</li>
+</ul>
+<p>We rasterize urban areas onto the same raster grid as the WSF data, then pixel counts are summed by group and compared against each area’s own baseline in a single pass.</p>
+</section>
+<section id="flag-outdated-segments" class="level3">
+<h3 class="anchored" data-anchor-id="flag-outdated-segments">3.4. Flag outdated segments</h3>
+<p>An area is flagged when all three hold:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Condition</th>
+<th>Threshold</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Share of today’s settled area that postdates baseline</td>
+<td><strong>&gt; 15%</strong> <em>(placeholder; 10–25% under consideration)</em></td>
+</tr>
+<tr class="even">
+<td>Absolute settled-area growth since baseline</td>
+<td><strong>&gt; 10,000 m²</strong></td>
+</tr>
+<tr class="odd">
+<td>Non-trivial existing building footprint coverage</td>
+<td><strong>≥ 10 buildings</strong> <em>(placeholder)</em></td>
+</tr>
+</tbody>
+</table>
+<p>The percentage and coverage thresholds are provisional and will be calibrated; the absolute-area threshold reflects the current specification.</p>
+</section>
+<section id="outputs-2" class="level3">
+<h3 class="anchored" data-anchor-id="outputs-2">Outputs</h3>
+<p>Outputs are written to <code>&lt;data-root&gt;/&lt;city&gt;/outputs/outdated_segments.gpkg</code>: segment geometries with <code>baseline_epoch</code>, <code>baseline_year</code>, <code>building_count</code>, <code>current_settled_m2</code>, <code>baseline_settled_m2</code>, <code>change_pct</code>, <code>change_abs_m2</code>, and the <code>outdated</code> flag. Intermediate results are kept in <code>&lt;data-root&gt;/&lt;city&gt;/sources/</code>:</p>
+<ul>
+<li><code>wsf/</code>: the clipped, reprojected WSF Tracker raster</li>
+<li><code>segments/</code>: segments with baseline, then with settled-area statistics, at each stage</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
