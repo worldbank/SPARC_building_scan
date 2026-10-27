@@ -143,6 +143,14 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#compute-neighbor-statistics" id="toc-compute-neighbor-statistics" class="nav-link" data-scroll-target="#compute-neighbor-statistics">2.4. Compute neighbor statistics</a></li>
   <li><a href="#outputs-1" id="toc-outputs-1" class="nav-link" data-scroll-target="#outputs-1">Outputs</a></li>
   </ul></li>
+  <li><a href="#flag-areas-for-review" id="toc-flag-areas-for-review" class="nav-link" data-scroll-target="#flag-areas-for-review">3) Flag Areas for Review</a>
+  <ul class="collapse">
+  <li><a href="#stream-the-wsf-tracker-raster" id="toc-stream-the-wsf-tracker-raster" class="nav-link" data-scroll-target="#stream-the-wsf-tracker-raster">3.1. Stream the WSF Tracker raster</a></li>
+  <li><a href="#establish-each-segments-baseline" id="toc-establish-each-segments-baseline" class="nav-link" data-scroll-target="#establish-each-segments-baseline">3.2. Establish each segment’s baseline</a></li>
+  <li><a href="#measure-settled-area-change" id="toc-measure-settled-area-change" class="nav-link" data-scroll-target="#measure-settled-area-change">3.3. Measure settled-area change</a></li>
+  <li><a href="#flag-outdated-segments" id="toc-flag-outdated-segments" class="nav-link" data-scroll-target="#flag-outdated-segments">3.4. Flag outdated segments</a></li>
+  <li><a href="#outputs-2" id="toc-outputs-2" class="nav-link" data-scroll-target="#outputs-2">Outputs</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -400,7 +408,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="data-cleaning" class="level2">
 <h2 class="anchored" data-anchor-id="data-cleaning">2) Data Cleaning</h2>
-<p>The cleaning step (<code>src/2_data_cleaning</code>) removes likely false positives from the integrated footprints using satellite-derived evidence of whether a building is present. It then adds neighborhood statistics for later review. <code>run_workflow.py</code> runs the scripts below in order; each step can also be run on its own.</p>
+<p>The cleaning step (<code>src/2_data_cleaning</code>) removes likely false positives from the integrated footprints using satellite-derived evidence of whether a building is present. It then adds neighborhood statistics for later review. <code>run_workflow.py</code> runs the scripts below in order.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -505,6 +513,104 @@ ul.task-list li input[type="checkbox"] {
 <li><code>gee/</code>: footprints with Earth Engine values (<code>.gpkg</code> and <code>.csv</code>)</li>
 <li><code>gee/outlier_results/</code>: footprints with Isolation Forest results and t-SNE diagnostic plots</li>
 <li><code>cleaning/</code>: footprints remaining after false positives are dropped</li>
+</ul>
+</section>
+</section>
+<section id="flag-areas-for-review" class="level2">
+<h2 class="anchored" data-anchor-id="flag-areas-for-review">3) Flag Areas for Review</h2>
+<p>The review step (<code>src/3_outdated_segments</code>) identifies urban areas (grouped blocks) where the building footprint layer is likely out of date — where satellite evidence shows meaningfully more settled area today than the footprints we currently have account for. <code>run_workflow.py</code> runs the scripts below in order.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Stage</th>
+<th>Script</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td><code>0_download_wsf.py</code></td>
+<td>Stream and clip the WSF Tracker raster for the AOI</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td><code>1_sample_building_wsf_year.py</code></td>
+<td>Establish each segment’s baseline from its own buildings</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td><code>2_compute_settled_change.py</code></td>
+<td>Measure settled-area growth since each segment’s baseline</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td><code>3_flag_outdated_segments.py</code></td>
+<td>Flag segments whose footprints are likely outdated</td>
+</tr>
+</tbody>
+</table>
+<section id="stream-the-wsf-tracker-raster" class="level3">
+<h3 class="anchored" data-anchor-id="stream-the-wsf-tracker-raster">3.1. Stream the WSF Tracker raster</h3>
+<p>We use the World Settlement Footprint (WSF) Tracker, a global biannual record of built-up land cover since 2016. Each pixel’s value is the earliest epoch at which it was detected as built-up: <strong>0</strong> means never detected; <strong>1–20</strong> index the half-year epochs from 2016-07-01 onward, six months apart. The clipped raster is reprojected to the analysis CRS so pixel counts translate directly to area.</p>
+<p><span class="small text-muted">World Settlement Footprint Tracker. Streamed from <code>source.coop/mindearth/wsf</code>.</span></p>
+</section>
+<section id="establish-each-segments-baseline" class="level3">
+<h3 class="anchored" data-anchor-id="establish-each-segments-baseline">3.2. Establish each segment’s baseline</h3>
+<p>We define urban areas (group blocks) following research from CIESIN (Segments V2). For every footprint from step 2, we sample the WSF epoch at its interior point. Within each segment, the baseline is the <strong>lower quartile</strong> of the WSF epoch among its own buildings — the point below which the oldest quarter of the segment’s <em>currently mapped</em> building stock sits. This is a per-segment reference point.</p>
+<p><em>Why lower quartile, and why epoch 1 dominates in practice:</em> epoch 1 covers everything built before monitoring began in mid-2016, regardless of whether that was 1990 or 2015. In the cities tested so far, every segment’s buildings include enough pre-2016 development that the lower quartile lands on epoch 1. The growth comparison in 3.3 still varies meaningfully by segment even when the baseline epoch does not. Segments are also given a <code>building_count</code>, used as a coverage gate in 3.4.</p>
+</section>
+<section id="measure-settled-area-change" class="level3">
+<h3 class="anchored" data-anchor-id="measure-settled-area-change">3.3. Measure settled-area change</h3>
+<p>For each urban area, we compare two areas from the same raster:</p>
+<ul>
+<li><strong>Current settled area:</strong> every pixel ever detected as built-up (epoch 1–20).</li>
+<li><strong>Baseline settled area:</strong> pixels detected as built-up at or before <em>that area’s own</em> baseline epoch from 3.2.</li>
+</ul>
+<p>We rasterize urban areas onto the same raster grid as the WSF data, then pixel counts are summed by group and compared against each area’s own baseline in a single pass.</p>
+</section>
+<section id="flag-outdated-segments" class="level3">
+<h3 class="anchored" data-anchor-id="flag-outdated-segments">3.4. Flag outdated segments</h3>
+<p>An area is flagged when all three hold:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Condition</th>
+<th>Threshold</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Share of today’s settled area that postdates baseline</td>
+<td><strong>&gt; 15%</strong> <em>(placeholder; 10–25% under consideration)</em></td>
+</tr>
+<tr class="even">
+<td>Absolute settled-area growth since baseline</td>
+<td><strong>&gt; 10,000 m²</strong></td>
+</tr>
+<tr class="odd">
+<td>Non-trivial existing building footprint coverage</td>
+<td><strong>≥ 10 buildings</strong> <em>(placeholder)</em></td>
+</tr>
+</tbody>
+</table>
+<p>The percentage and coverage thresholds are provisional and will be calibrated; the absolute-area threshold reflects the current specification.</p>
+</section>
+<section id="outputs-2" class="level3">
+<h3 class="anchored" data-anchor-id="outputs-2">Outputs</h3>
+<p>Outputs are written to <code>&lt;data-root&gt;/&lt;city&gt;/outputs/outdated_segments.gpkg</code>: segment geometries with <code>baseline_epoch</code>, <code>baseline_year</code>, <code>building_count</code>, <code>current_settled_m2</code>, <code>baseline_settled_m2</code>, <code>change_pct</code>, <code>change_abs_m2</code>, and the <code>outdated</code> flag. Intermediate results are kept in <code>&lt;data-root&gt;/&lt;city&gt;/sources/</code>:</p>
+<ul>
+<li><code>wsf/</code>: the clipped, reprojected WSF Tracker raster</li>
+<li><code>segments/</code>: segments with baseline, then with settled-area statistics, at each stage</li>
 </ul>
 
 
