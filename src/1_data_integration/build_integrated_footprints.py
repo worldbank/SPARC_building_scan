@@ -26,7 +26,7 @@ from footprint_overlap_resolution import resolve_overlaps_by_recency  # noqa: E4
 matplotlib.use("Agg")
 MIN_AREA_M2 = 4.0  # candidate polygons smaller than this are dropped before selection
 OVERLAP_TOLERANCE_M2 = 0.01  # below this, an intersection is a boundary-touch/sliver, not a real conflict
-OVERLAP_SMALLER_FRACTION = 0.20  # intersection must cover >= 20% of the smaller footprint to count as a conflict
+OVERLAP_SMALLER_FRACTION = 0.05  # intersection must cover >= 5% of the smaller footprint to count as a conflict
 GLOBFP_DATE = pd.Timestamp("2020-01-01", tz="UTC")  # 3D-GloBFP's documented model vintage; it has no per-feature date
 RECENCY_TIEBREAK = {
     # Primary ranking key for overlap resolution: higher priority always wins.
