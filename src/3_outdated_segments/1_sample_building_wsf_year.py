@@ -4,6 +4,10 @@ per-segment baseline: the lower-quartile WSF epoch among that segment's own
 buildings. This baseline is the per-segment T used by later stages to measure
 how much of today's settled area postdates it.
 
+The per-building samples (segment_id, wsf_epoch, wsf_year) are written as a
+"buildings_wsf" layer in outputs/best_available_footprints_cleaned.gpkg,
+next to the cleaned "buildings" layer.
+
 Segments are a user-supplied external file (not necessarily tied to this
 city's own ANALYSIS_ID) -- e.g. a CIESIN City Segments Layer v2 export with a
 native ID_SEG field, or any polygon layer. If no obvious ID column is found,
@@ -31,6 +35,7 @@ from city_workspace import add_data_root_arg, enable_logging, load_city, resolve
 EPOCH_START = date(2016, 1, 1)  # epoch 1 lands on 2016-07-01 via +6 months
 EPOCH_MONTHS = 6
 SEGMENT_ID_CANDIDATES = ["ID_SEG", "segment_id", "SEGMENT_UID", "ANALYSIS_ID"]
+BUILDINGS_WSF_LAYER = "buildings_wsf"
 
 
 def epoch_to_year(epoch) -> float:
@@ -141,6 +146,12 @@ def run(city, args) -> None:
     segments = segments.rename(columns={id_field: "segment_id"})
     segments.to_file(output_gpkg, layer="segments_baseline", driver="GPKG")
     print(f"Saved: {output_gpkg}")
+
+    buildings["segment_id"] = buildings_wsf["segment_id"].to_numpy()
+    buildings["wsf_epoch"] = buildings_wsf["wsf_epoch"].to_numpy()
+    buildings["wsf_year"] = buildings_wsf["wsf_year"].to_numpy()
+    buildings.to_file(buildings_path, layer=BUILDINGS_WSF_LAYER, driver="GPKG")
+    print(f"Saved: {buildings_path} (layer: {BUILDINGS_WSF_LAYER})")
 
 
 def main() -> None:
