@@ -11,11 +11,14 @@ has strong Dynamic World "built" support.
 from __future__ import annotations
 
 import argparse
+import sys
+from pathlib import Path
 
 import geopandas as gpd
 import pandas as pd
 
-from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root, skip_existing
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root, skip_existing  # noqa: E402
 
 
 GLO_PROVIDER_VALUE = "3D-GloBFP"
@@ -51,11 +54,18 @@ def apply_screening(gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
 
     drop_mask = (~protected) & (rule_a | rule_b)
 
+    # Assign a string flag saying why a building was dropped
+    gdf.loc[drop_mask, "drop_reason"] = ""
+    gdf.loc[drop_mask & rule_a, "drop_reason"] += "rule_a "
+    gdf.loc[drop_mask & rule_b, "drop_reason"] += "rule_b"
+
     original_len = len(gdf)
     screened = gdf.loc[~drop_mask].copy()
+    screened = screened.drop(columns=["drop_reason"])
+    dropped = gdf.loc[drop_mask].copy()
     print(f"False positives dropped: {drop_mask.sum():,} / {original_len:,}")
     print(f"Buildings retained: {len(screened):,}")
-    return screened
+    return screened, dropped
 
 
 def run(city, args) -> None:
@@ -70,8 +80,9 @@ def run(city, args) -> None:
 
     gdf = gpd.read_file(input_gpkg, layer=f"{city.slug}_buildings_if_tsne")
     print(f"Buildings loaded: {len(gdf):,}")
-    screened = apply_screening(gdf)
+    screened, dropped = apply_screening(gdf)
     screened.to_file(output_gpkg, layer=f"{city.slug}_screened", driver="GPKG")
+    dropped.to_file(output_gpkg, layer=f"{city.slug}_dropped", driver="GPKG")
     print(f"GeoPackage saved: {output_gpkg}")
 
 

@@ -6,13 +6,16 @@ Writes the pipeline's final output.
 from __future__ import annotations
 
 import argparse
+import sys
+from pathlib import Path
 
 import geopandas as gpd
 import numpy as np
 import shapely
 from shapely.strtree import STRtree
 
-from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root, skip_existing
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root, skip_existing  # noqa: E402
 
 
 NEIGHBOR_DISTANCE_M = 50.0

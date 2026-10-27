@@ -1,9 +1,0 @@
-earthengine-api
-geopandas
-matplotlib
-numpy
-pandas
-pyarrow
-pyogrio
-scikit-learn
-shapely

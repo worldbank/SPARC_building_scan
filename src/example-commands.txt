@@ -1,0 +1,50 @@
+uv venv --python 3.12
+uv pip install -r requirements.txt
+
+source .venv/bin/activate
+
+python 1_data_integration/run_workflow.py \
+  --city-name "Malakal" \
+  --aoi ~/Documents/sparc/malakal/Malakal_AOI_2.gpkg \
+  --data-root ~/bafw-data \
+  --skip-gba-height
+
+python 2_data_cleaning/run_workflow.py \
+  --city "malakal" \
+  --data-root ~/bafw-data \
+  --ee-project sparc-512301
+
+python 3_outdated_segments/run_workflow.py \
+  --city "malakal" \
+  --data-root ~/bafw-data \
+  --segments /Users/andreschamorro/Documents/sparc/malakal/segments_v2.gpkg \
+  --segments-layer segments \
+  --segments-id-field newid
+
+
+uv venv --python 3.12
+.venv/Scripts/activate
+uv pip install -r requirements.txt
+
+python 1_data_integration/run_workflow.py ^
+  --city-name "Malakal" ^
+  --aoi C:/Users/WB514197/tmp/sparc/data/malakal/Malakal_AOI_2.gpkg ^
+  --data-root C:/Users/WB514197/tmp/sparc/workflow/
+
+python 2_data_cleaning/run_workflow.py ^
+  --city "malakal" ^
+  --data-root C:/Users/WB514197/tmp/sparc/workflow/ ^
+  --ee-project sparc-512301
+
+python 3_outdated_segments/run_workflow.py ^
+  --city "malakal" ^
+  --data-root C:/Users/WB514197/tmp/sparc/workflow/ ^
+  --segments C:/Users/WB514197/tmp/sparc/data/malakal/segments_v2.gpkg ^
+  --segments-layer segments ^
+  --segments-id-field newid ^
+  --force
+
+.venv\Scripts\python.exe ./2_data_cleaning\2_drop_false_positives.py ^
+  --city malakal ^
+  --data-root C:\Users\WB514197\tmp\sparc\workflow ^
+  --force

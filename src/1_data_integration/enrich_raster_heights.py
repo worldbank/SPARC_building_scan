@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -19,7 +20,8 @@ from pyproj import Transformer
 from rasterio.enums import Resampling
 from rasterio.windows import Window, from_bounds
 
-from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root  # noqa: E402
 
 
 VALID_MIN_HEIGHT_M = 0.5

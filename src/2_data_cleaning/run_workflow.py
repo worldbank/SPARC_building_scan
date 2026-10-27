@@ -8,7 +8,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-from city_workspace import LOG_FILENAME, add_data_root_arg, enable_logging, resolve_data_root
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from city_workspace import LOG_FILENAME, add_data_root_arg, enable_logging, resolve_data_root  # noqa: E402
 
 
 SCRIPTS = Path(__file__).resolve().parent

@@ -15,6 +15,7 @@ import os
 import shutil
 import struct
 import subprocess
+import sys
 import zipfile
 import zlib
 from datetime import datetime, timezone
@@ -26,7 +27,8 @@ import requests
 import shapely
 from s2sphere import LatLng, LatLngRect, RegionCoverer
 
-from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root  # noqa: E402
 
 
 GOOGLE_MANIFEST_ROOT = (

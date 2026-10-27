@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import sys
 from pathlib import Path
 
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/mpl_best_available_footprints")
@@ -17,14 +18,15 @@ import pandas as pd
 import shapely
 from matplotlib import pyplot as plt
 
-from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root, skip_existing
-from footprint_overlap_resolution import resolve_overlaps_by_recency
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from city_workspace import add_data_root_arg, enable_logging, load_city, resolve_data_root, skip_existing  # noqa: E402
+from footprint_overlap_resolution import resolve_overlaps_by_recency  # noqa: E402
 
 
 matplotlib.use("Agg")
 MIN_AREA_M2 = 4.0  # candidate polygons smaller than this are dropped before selection
 OVERLAP_TOLERANCE_M2 = 0.01  # below this, an intersection is a boundary-touch/sliver, not a real conflict
-OVERLAP_SMALLER_FRACTION = 0.20  # intersection must cover >= 20% of the smaller footprint to count as a conflict
+OVERLAP_SMALLER_FRACTION = 0.05  # intersection must cover >= 5% of the smaller footprint to count as a conflict
 GLOBFP_DATE = pd.Timestamp("2020-01-01", tz="UTC")  # 3D-GloBFP's documented model vintage; it has no per-feature date
 RECENCY_TIEBREAK = {
     # Primary ranking key for overlap resolution: higher priority always wins.
